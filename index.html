@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lucas OS</title>
+<style>
+  :root {
+    --azul-50: #E6F4FF; --azul-100: #B3D9FF; --azul-600: #0066CC; --azul-800: #004499; --azul-900: #002266;
+    --verde-400: #2DA870; --verde-800: #0F5238;
+    --cinza-50: #F7F7F5; --cinza-100: #EBEBEA; --cinza-200: #CFCFCD; --cinza-400: #9B9B98;
+    --cinza-600: #6B6B68; --cinza-800: #3A3A38; --cinza-900: #1A1A18;
+    --bg: #F7F8FA; --bg-card: #FFFFFF;
+    --text-primary: #1A1A18; --text-secondary: #6B6B68; --text-muted: #9B9B98;
+    --border: #E8E8E6; --border-hover: #CFCFCD;
+    --accent: #0066CC; --accent-soft: #E6F4FF;
+    --accent-verde: #1A7A52; --accent-verde-soft: #E8F7F0;
+    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06); --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text-primary); font-size: 15px; line-height: 1.6; min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* LOADING */
+  #loading-screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; gap: 1rem; }
+  .loading-logo { font-size: 28px; font-weight: 700; color: var(--text-primary); }
+  .loading-logo span { color: var(--accent); }
+  .loading-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+
+  /* TELAS */
+  .tela { display: none; min-height: 100vh; }
+  .tela.ativa { display: flex; }
+
+  /* ABERTURA */
+  #tela-abertura { flex-direction: column; align-items: center; justify-content: center; padding: 2rem 1rem; background: var(--bg); }
+  .abertura-container { width: 100%; max-width: 560px; }
+  .abertura-saudacao { font-size: 13px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .abertura-titulo { font-size: 26px; font-weight: 600; color: var(--text-primary); margin-bottom: 2rem; }
+  .abertura-bloco { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1rem; box-shadow: var(--shadow-sm); }
+  .abertura-bloco-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem; }
+  .abertura-missao-texto { font-size: 17px; font-weight: 500; color: var(--text-primary); line-height: 1.5; font-style: italic; }
+  .projetos-lista { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .projetos-lista li { display: flex; align-items: center; gap: 0.5rem; font-size: 14px; color: var(--text-primary); }
+  .projeto-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-verde); flex-shrink: 0; }
+  .pendencias-lista { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+  .pendencias-lista li { font-size: 14px; color: var(--text-secondary); display: flex; align-items: center; gap: 0.5rem; }
+  .pendencias-lista li::before { content: '↩'; color: var(--text-muted); font-size: 13px; }
+  .btn-principal { width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: var(--radius-md); font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 0.5rem; transition: background 0.15s, transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+  .btn-principal:hover { background: var(--azul-800); }
+  .btn-principal:active { transform: scale(0.98); }
+
+  /* LAYOUT PRINCIPAL */
+  #tela-principal { flex-direction: row; }
+  .sidebar { width: 220px; min-height: 100vh; background: var(--bg-card); border-right: 1px solid var(--border); padding: 1.5rem 1rem; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar-logo { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 2rem; padding: 0 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+  .sidebar-logo span { display: inline-block; width: 22px; height: 22px; background: var(--accent); border-radius: 5px; }
+  .sidebar-missao { background: var(--accent-soft); border-radius: var(--radius-md); padding: 0.75rem; margin-bottom: 1.5rem; font-size: 12px; color: var(--azul-800); line-height: 1.5; font-style: italic; border-left: 3px solid var(--accent); }
+  .sidebar-nav { list-style: none; display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .sidebar-nav li button { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.75rem; border-radius: var(--radius-sm); color: var(--text-secondary); font-size: 14px; font-weight: 400; cursor: pointer; border: none; background: none; width: 100%; text-align: left; transition: background 0.12s, color 0.12s; }
+  .sidebar-nav li button:hover { background: var(--cinza-50); color: var(--text-primary); }
+  .sidebar-nav li.ativo button { background: var(--accent-soft); color: var(--accent); font-weight: 500; }
+  .sidebar-nav li svg { width: 17px; height: 17px; flex-shrink: 0; opacity: 0.7; }
+  .sidebar-nav li.ativo svg { opacity: 1; }
+  .sidebar-footer { padding-top: 1rem; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); padding-left: 0.5rem; }
+  .status-sync { font-size: 11px; margin-top: 0.4rem; display: flex; align-items: center; gap: 0.3rem; }
+  .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-verde); }
+  .sync-dot.sincronizando { background: #FAC775; animation: pulse 0.8s infinite; }
+  .sync-dot.erro { background: #E24B4A; }
+
+  /* CONTEÚDO */
+  .conteudo { flex: 1; padding: 2rem 2.5rem; min-height: 100vh; max-width: 860px; }
+  .pagina-titulo { font-size: 22px; font-weight: 600; color: var(--text-primary); margin-bottom: 0.3rem; }
+  .pagina-subtitulo { font-size: 14px; color: var(--text-muted); margin-bottom: 2rem; }
+
+  /* CARDS */
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); }
+  .card-titulo { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+
+  /* TAREFAS */
+  .secao-projeto { margin-bottom: 1.5rem; }
+  .secao-projeto-nome { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem; padding-left: 0.25rem; display: flex; align-items: center; gap: 0.4rem; }
+  .secao-projeto-nome::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-verde); }
+  .tarefa-item { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.55rem 0.5rem; border-radius: var(--radius-sm); transition: background 0.12s; }
+  .tarefa-item:hover { background: var(--cinza-50); }
+  .tarefa-check { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--border-hover); cursor: pointer; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: border-color 0.12s, background 0.12s; background: white; }
+  .tarefa-check:hover { border-color: var(--accent); }
+  .tarefa-check.concluida { background: var(--accent-verde); border-color: var(--accent-verde); }
+  .tarefa-check.concluida::after { content: ''; width: 9px; height: 5px; border-left: 2px solid white; border-bottom: 2px solid white; transform: rotate(-45deg) translateY(-1px); }
+  .tarefa-texto { font-size: 14px; color: var(--text-primary); line-height: 1.5; flex: 1; }
+  .tarefa-texto.concluida { text-decoration: line-through; color: var(--text-muted); }
+  .tarefa-delete { width: 20px; height: 20px; border: none; background: none; cursor: pointer; color: var(--text-muted); opacity: 0; font-size: 16px; border-radius: 3px; display: flex; align-items: center; justify-content: center; transition: opacity 0.12s, background 0.12s; flex-shrink: 0; }
+  .tarefa-item:hover .tarefa-delete { opacity: 1; }
+  .tarefa-delete:hover { background: #FEE; color: #C00; }
+
+  /* ROTINA */
+  .rotina-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .rotina-item { display: flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.75rem; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-card); cursor: pointer; transition: all 0.15s; font-size: 13px; color: var(--text-secondary); user-select: none; }
+  .rotina-item:hover { border-color: var(--border-hover); color: var(--text-primary); }
+  .rotina-item.feito { background: var(--accent-verde-soft); border-color: var(--accent-verde); color: var(--verde-800); font-weight: 500; }
+  .rotina-item.feito::before { content: '✓'; font-size: 11px; color: var(--accent-verde); }
+
+  /* PROJETOS */
+  .projeto-card { display: flex; align-items: center; padding: 1rem 1.25rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 0.75rem; cursor: pointer; transition: all 0.15s; box-shadow: var(--shadow-sm); }
+  .projeto-card:hover { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .projeto-icone { width: 38px; height: 38px; border-radius: 8px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; margin-right: 1rem; }
+  .projeto-info { flex: 1; }
+  .projeto-nome { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+  .projeto-meta { font-size: 12px; color: var(--text-muted); }
+  .projeto-arrow { color: var(--text-muted); font-size: 18px; }
+
+  /* ESTACIONAMENTO */
+  .idea-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border); }
+  .idea-item:last-of-type { border-bottom: none; }
+  .idea-texto { flex: 1; }
+  .idea-titulo { font-size: 14px; color: var(--text-primary); font-weight: 500; }
+  .idea-data { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .idea-acoes { display: flex; gap: 0.4rem; }
+
+  /* INPUTS */
+  .btn-mini { padding: 0.25rem 0.6rem; border-radius: 4px; border: 1px solid var(--border); background: none; font-size: 12px; color: var(--text-secondary); cursor: pointer; transition: all 0.12s; }
+  .btn-mini:hover { border-color: var(--border-hover); color: var(--text-primary); background: var(--cinza-50); }
+  .btn-mini.danger:hover { border-color: #F09595; color: #A32D2D; background: #FCEBEB; }
+  .input-full { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; color: var(--text-primary); background: var(--bg-card); outline: none; font-family: inherit; transition: border-color 0.12s; }
+  .input-full:focus { border-color: var(--accent); }
+  .input-full::placeholder { color: var(--text-muted); }
+  .textarea-full { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 14px; color: var(--text-primary); background: var(--bg-card); outline: none; font-family: inherit; resize: vertical; min-height: 80px; transition: border-color 0.12s; line-height: 1.6; }
+  .textarea-full:focus { border-color: var(--accent); }
+  .textarea-full::placeholder { color: var(--text-muted); }
+  .select-projeto { padding: 0.5rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; color: var(--text-primary); background: var(--bg-card); outline: none; font-family: inherit; cursor: pointer; width: 100%; margin-top: 0.5rem; transition: border-color 0.12s; }
+  .select-projeto:focus { border-color: var(--accent); }
+
+  /* CHECK-IN */
+  .checkin-pergunta { margin-bottom: 1.25rem; }
+  .checkin-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 0.4rem; display: block; }
+
+  /* CONSISTÊNCIA */
+  .consistencia-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-bottom: 1rem; }
+  .dia-header { font-size: 11px; text-align: center; color: var(--text-muted); font-weight: 500; padding: 0.2rem 0; }
+  .dia-celula { aspect-ratio: 1; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; cursor: pointer; transition: transform 0.1s; }
+  .dia-celula:hover { transform: scale(1.15); }
+  .dia-celula.vazio { background: var(--cinza-100); color: var(--text-muted); }
+  .dia-celula.feito { background: var(--verde-400); color: white; }
+  .dia-celula.parcial { background: #FAC775; color: var(--cinza-900); }
+  .dia-celula.nao-feito { background: #F09595; color: #A32D2D; }
+  .dia-celula.hoje { box-shadow: 0 0 0 2px var(--accent); }
+  .dia-celula.futuro { background: var(--cinza-50); color: var(--border-hover); cursor: default; }
+
+  /* MODAIS */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none; align-items: center; justify-content: center; z-index: 100; }
+  .modal-overlay.aberto { display: flex; }
+  .modal-box { background: var(--bg-card); border-radius: var(--radius-lg); padding: 1.5rem; width: 100%; max-width: 480px; box-shadow: var(--shadow-md); }
+  .modal-titulo { font-size: 16px; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; }
+  .modal-acoes { display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: flex-end; }
+  .btn-secundario { padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; font-size: 14px; cursor: pointer; color: var(--text-secondary); transition: all 0.12s; }
+  .btn-secundario:hover { background: var(--cinza-50); border-color: var(--border-hover); }
+  .btn-confirmar { padding: 0.5rem 1rem; border-radius: var(--radius-sm); background: var(--accent); color: white; border: none; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.12s; }
+  .btn-confirmar:hover { background: var(--azul-800); }
+
+  /* NOTIFICAÇÃO */
+  .notificacao { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--cinza-900); color: white; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); font-size: 14px; font-weight: 500; opacity: 0; transform: translateY(8px); transition: opacity 0.25s, transform 0.25s; z-index: 200; pointer-events: none; }
+  .notificacao.visivel { opacity: 1; transform: translateY(0); }
+
+  /* BOTÃO ADD */
+  .btn-add-flutuante { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 0.9rem; border: 1px dashed var(--border-hover); border-radius: var(--radius-sm); background: none; color: var(--text-muted); font-size: 13px; cursor: pointer; transition: all 0.12s; margin-top: 0.5rem; }
+  .btn-add-flutuante:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); border-style: solid; }
+
+  /* DETALHE PROJETO */
+  .objetivo-box { background: var(--accent-soft); border-radius: var(--radius-md); padding: 0.85rem 1rem; border-left: 3px solid var(--accent); margin-bottom: 1.25rem; }
+  .objetivo-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; color: var(--azul-600); margin-bottom: 0.3rem; }
+  .objetivo-texto { font-size: 15px; color: var(--azul-900); font-weight: 500; }
+  .tarefa-fixa-badge { font-size: 10px; padding: 0.1rem 0.4rem; border-radius: 3px; background: var(--cinza-100); color: var(--cinza-600); font-weight: 500; margin-left: 0.4rem; }
+  .btn-voltar { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-muted); font-size: 14px; cursor: pointer; border: none; background: none; padding: 0.25rem 0; margin-bottom: 1.5rem; transition: color 0.12s; }
+  .btn-voltar:hover { color: var(--text-primary); }
+  .secao-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+  .secao-header-titulo { font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em; }
+
+  /* EMPTY */
+  .empty-state { text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); }
+  .empty-state-icon { font-size: 32px; margin-bottom: 0.75rem; }
+  .empty-state-texto { font-size: 14px; }
+
+  @media (max-width: 700px) {
+    .sidebar { display: none; }
+    .conteudo { padding: 1.25rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div id="loading-screen">
+  <div class="loading-logo">Lucas <span>OS</span></div>
+  <div class="loading-dot"></div>
+</div>
+
+<!-- ABERTURA -->
+<div id="tela-abertura" class="tela">
+  <div class="abertura-container">
+    <p class="abertura-saudacao" id="saudacao-hora">Bom dia</p>
+    <h1 class="abertura-titulo">Lucas.</h1>
+    <div class="abertura-bloco">
+      <div class="abertura-bloco-label">Sua missão</div>
+      <div class="abertura-missao-texto" id="abertura-missao-texto"></div>
+    </div>
+    <div class="abertura-bloco">
+      <div class="abertura-bloco-label">Projetos ativos</div>
+      <ul class="projetos-lista" id="abertura-projetos-lista"></ul>
+    </div>
+    <div class="abertura-bloco" id="abertura-pendencias-bloco" style="display:none">
+      <div class="abertura-bloco-label">Ficou pendente ontem</div>
+      <ul class="pendencias-lista" id="abertura-pendencias-lista"></ul>
+    </div>
+    <button class="btn-principal" onclick="irParaPrincipal()">Definir o foco de hoje →</button>
+  </div>
+</div>
+
+<!-- PRINCIPAL -->
+<div id="tela-principal" class="tela">
+  <nav class="sidebar">
+    <div class="sidebar-logo"><span></span> Lucas OS</div>
+    <div class="sidebar-missao" id="sidebar-missao"></div>
+    <ul class="sidebar-nav">
+      <li class="ativo" id="nav-hoje">
+        <button onclick="navegar('hoje')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Hoje
+        </button>
+      </li>
+      <li id="nav-projetos">
+        <button onclick="navegar('projetos')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+          Projetos
+        </button>
+      </li>
+      <li id="nav-estacionamento">
+        <button onclick="navegar('estacionamento')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>
+          Ideias
+        </button>
+      </li>
+      <li id="nav-checkin">
+        <button onclick="navegar('checkin')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          Check-in
+        </button>
+      </li>
+      <li id="nav-consistencia">
+        <button onclick="navegar('consistencia')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Consistência
+        </button>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <span id="sidebar-data"></span>
+      <div class="status-sync">
+        <div class="sync-dot" id="sync-dot"></div>
+        <span id="sync-texto">Sincronizado</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOJE -->
+  <div id="pagina-hoje" class="conteudo">
+    <h1 class="pagina-titulo">Hoje</h1>
+    <p class="pagina-subtitulo" id="subtitulo-hoje"></p>
+    <div class="card">
+      <div class="card-titulo">
+        Tarefas do dia
+        <button class="btn-add-flutuante" onclick="abrirModal('modal-tarefa')" style="margin:0;font-size:12px;padding:0.2rem 0.6rem">+ nova tarefa</button>
+      </div>
+      <div id="tarefas-por-projeto"></div>
+      <div id="tarefas-vazio" class="empty-state" style="display:none">
+        <div class="empty-state-icon">📋</div>
+        <div class="empty-state-texto">Nenhuma tarefa ainda. Adicione a primeira.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-titulo">Rotina <button class="btn-mini" onclick="abrirModalRotina()">editar</button></div>
+      <div class="rotina-grid" id="rotina-grid"></div>
+    </div>
+  </div>
+
+  <!-- PROJETOS -->
+  <div id="pagina-projetos" class="conteudo" style="display:none">
+    <h1 class="pagina-titulo">Projetos</h1>
+    <p class="pagina-subtitulo">Tudo que você está construindo</p>
+    <div id="lista-projetos"></div>
+    <button class="btn-add-flutuante" onclick="abrirModal('modal-projeto')">+ novo projeto</button>
+  </div>
+
+  <!-- DETALHE PROJETO -->
+  <div id="pagina-projeto-detalhe" class="conteudo" style="display:none">
+    <button class="btn-voltar" onclick="navegar('projetos')">← Projetos</button>
+    <h1 class="pagina-titulo" id="detalhe-nome"></h1>
+    <p class="pagina-subtitulo" id="detalhe-descricao"></p>
+    <div id="detalhe-objetivo"></div>
+    <div class="card">
+      <div class="secao-header">
+        <div class="secao-header-titulo">Tarefas</div>
+        <button class="btn-mini" onclick="abrirModalTarefaProjeto()">+ nova</button>
+      </div>
+      <div id="detalhe-tarefas"></div>
+    </div>
+    <div class="card">
+      <div class="secao-header">
+        <div class="secao-header-titulo">Tarefas fixas (todo mês)</div>
+        <button class="btn-mini" onclick="abrirModal('modal-tarefa-fixa')">+ nova</button>
+      </div>
+      <div id="detalhe-tarefas-fixas"></div>
+    </div>
+  </div>
+
+  <!-- ESTACIONAMENTO -->
+  <div id="pagina-estacionamento" class="conteudo" style="display:none">
+    <h1 class="pagina-titulo">Ideias e aprendizados</h1>
+    <p class="pagina-subtitulo">Descarga mental. Sem julgamento.</p>
+    <div class="card">
+      <div class="card-titulo">Estacionamento de ideias <button class="btn-mini" onclick="abrirModal('modal-ideia')">+ nova ideia</button></div>
+      <div id="lista-ideias"></div>
+    </div>
+    <div class="card">
+      <div class="card-titulo">Aprender depois <button class="btn-mini" onclick="abrirModal('modal-aprender')">+ adicionar</button></div>
+      <div id="lista-aprender"></div>
+    </div>
+  </div>
+
+  <!-- CHECK-IN -->
+  <div id="pagina-checkin" class="conteudo" style="display:none">
+    <h1 class="pagina-titulo">Check-in do dia</h1>
+    <p class="pagina-subtitulo">Reflexão rápida. Sem pressão.</p>
+    <div class="card">
+      <div class="card-titulo">Encerrar o dia</div>
+      <div class="checkin-pergunta"><span class="checkin-label">O que eu fiz hoje?</span><textarea class="textarea-full" id="checkin-fiz" rows="2" placeholder="Resumo rápido..."></textarea></div>
+      <div class="checkin-pergunta"><span class="checkin-label">O que me distraiu?</span><textarea class="textarea-full" id="checkin-distrai" rows="2" placeholder="Sem julgamento..."></textarea></div>
+      <div class="checkin-pergunta"><span class="checkin-label">O que funcionou?</span><textarea class="textarea-full" id="checkin-funcionou" rows="2" placeholder="O que vale repetir?"></textarea></div>
+      <div class="checkin-pergunta"><span class="checkin-label">Qual é o próximo passo?</span><textarea class="textarea-full" id="checkin-proximo" rows="2" placeholder="Uma coisa clara para amanhã..."></textarea></div>
+      <button class="btn-principal" onclick="salvarCheckin()">Salvar reflexão do dia</button>
+    </div>
+    <div class="card" id="historico-checkins" style="display:none">
+      <div class="card-titulo">Histórico</div>
+      <div id="lista-checkins"></div>
+    </div>
+  </div>
+
+  <!-- CONSISTÊNCIA -->
+  <div id="pagina-consistencia" class="conteudo" style="display:none">
+    <h1 class="pagina-titulo">Consistência</h1>
+    <p class="pagina-subtitulo">Não é produtividade. É presença.</p>
+    <div class="card">
+      <div class="card-titulo" id="consistencia-mes-titulo"></div>
+      <div class="consistencia-grid" id="dias-semana-header"></div>
+      <div class="consistencia-grid" id="consistencia-grid"></div>
+      <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:var(--verde-400)"></div>Feito</div>
+        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:#FAC775"></div>Parcial</div>
+        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:#F09595"></div>Não fiz</div>
+        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:var(--cinza-100)"></div>Sem registro</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-titulo">Marcar hoje</div>
+      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:1rem">Como foi o dia de hoje?</p>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
+        <button class="btn-secundario" onclick="marcarDia('feito')" style="padding:0.6rem 1.25rem">🟩 Feito</button>
+        <button class="btn-secundario" onclick="marcarDia('parcial')" style="padding:0.6rem 1.25rem">🟨 Parcial</button>
+        <button class="btn-secundario" onclick="marcarDia('nao-feito')" style="padding:0.6rem 1.25rem">🟥 Não fiz</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAIS -->
+<div id="modal-tarefa" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Nova tarefa</div>
+    <input type="text" class="input-full" id="modal-tarefa-input" placeholder="O que precisa ser feito?">
+    <select class="select-projeto" id="modal-tarefa-projeto"><option value="">Sem projeto</option></select>
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-tarefa')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarTarefa()">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-ideia" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Nova ideia</div>
+    <input type="text" class="input-full" id="modal-ideia-input" placeholder="Qual é a ideia?">
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-ideia')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarIdeia()">Estacionar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-aprender" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Aprender depois</div>
+    <input type="text" class="input-full" id="modal-aprender-input" placeholder="O que você quer aprender?">
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-aprender')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarAprender()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-projeto" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Novo projeto</div>
+    <input type="text" class="input-full" id="modal-projeto-nome" placeholder="Nome do projeto" style="margin-bottom:0.5rem">
+    <input type="text" class="input-full" id="modal-projeto-descricao" placeholder="Descrição curta" style="margin-bottom:0.5rem">
+    <input type="text" class="input-full" id="modal-projeto-objetivo" placeholder="Objetivo atual" style="margin-bottom:0.5rem">
+    <input type="text" class="input-full" id="modal-projeto-emoji" placeholder="Emoji (ex: 💼)">
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-projeto')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarProjeto()">Criar projeto</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-tarefa-projeto" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Nova tarefa</div>
+    <input type="text" class="input-full" id="modal-tarefa-projeto-input" placeholder="Descrição da tarefa">
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-tarefa-projeto')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarTarefaProjeto()">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-tarefa-fixa" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Nova tarefa fixa</div>
+    <input type="text" class="input-full" id="modal-tarefa-fixa-input" placeholder="Ex: Produção de conteúdo mensal">
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-tarefa-fixa')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarTarefaFixa()">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<div id="modal-rotina" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Editar rotina</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.75rem">Adicione ou remova itens da sua rotina diária</p>
+    <div id="modal-rotina-lista" style="margin-bottom:0.75rem"></div>
+    <div style="display:flex;gap:0.5rem">
+      <input type="text" class="input-full" id="modal-rotina-input" placeholder="Novo item de rotina">
+      <button class="btn-confirmar" onclick="adicionarItemRotina()">+</button>
+    </div>
+    <div class="modal-acoes" style="margin-top:0.75rem">
+      <button class="btn-confirmar" onclick="fecharModal('modal-rotina')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<div id="notificacao" class="notificacao"></div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC39U-HSmpA71ANnY2XF6GtV61LU32koYI",
+  authDomain: "lucas-os-18ef6.firebaseapp.com",
+  databaseURL: "https://lucas-os-18ef6-default-rtdb.firebaseio.com",
+  projectId: "lucas-os-18ef6",
+  storageBucket: "lucas-os-18ef6.firebasestorage.app",
+  messagingSenderId: "958048484675",
+  appId: "1:958048484675:web:18822756cc066ed1f303f6"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+// ============================================================
+// ESTADO PADRÃO
+// ============================================================
+const ESTADO_PADRAO = {
+  missao: "Construir liberdade financeira através dos meus negócios digitais.",
+  projetos: {
+    proj_lucas_gold: { id: 'proj_lucas_gold', nome: 'Lucas Gold', descricao: 'Minha marca e gestão no digital', objetivo: 'Consolidar como gestor e conquistar novos clientes', emoji: '⭐', ativo: true, tarefasFixas: {} },
+    proj_cdl: { id: 'proj_cdl', nome: 'Casa da Lingerie', descricao: 'Cliente principal — social media, conteúdo e tráfego', objetivo: 'Entregar calendário de conteúdo e resultados mensais', emoji: '🏪', ativo: true, tarefasFixas: { fix_001: { id: 'fix_001', texto: 'Calendário de conteúdo mensal', concluida: false }, fix_002: { id: 'fix_002', texto: 'Relatório de resultados', concluida: false }, fix_003: { id: 'fix_003', texto: 'Sessão de produção na loja', concluida: false } } },
+    proj_tiktok: { id: 'proj_tiktok', nome: 'TikTok Shop — Queridão', descricao: 'Live shopping e afiliado independente', objetivo: 'Atingir 10k seguidores e ativar live shop', emoji: '🎯', ativo: true, tarefasFixas: {} },
+    proj_freela: { id: 'proj_freela', nome: 'Freela (Agências)', descricao: 'Vídeo e foto sob demanda', objetivo: 'Entregar projetos no prazo mantendo qualidade', emoji: '📸', ativo: true, tarefasFixas: {} }
+  },
+  tarefasHoje: {},
+  rotina: { 0: 'Levantar', 1: 'Café da manhã', 2: 'Trabalho Profundo', 3: 'Academia', 4: 'Caminhada', 5: 'Leitura', 6: 'Revisão do dia' },
+  rotinaHoje: {},
+  ideias: {},
+  aprenderDepois: {},
+  checkins: {},
+  consistencia: {}
+};
+
+let estado = {};
+let projetoDetalheAtual = null;
+let carregado = false;
+
+// ============================================================
+// UTILS
+// ============================================================
+function gerarId() { return 'id_' + Date.now() + '_' + Math.random().toString(36).substr(2,5); }
+function dataHoje() { return new Date().toISOString().split('T')[0]; }
+function formatarData(iso) {
+  if (!iso) return '';
+  const [ano, mes, dia] = iso.split('-');
+  const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  return `${dia} ${meses[parseInt(mes)-1]}`;
+}
+function nomeMes(num) {
+  return ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'][num];
+}
+function saudacaoPorHora() {
+  const h = new Date().getHours();
+  return h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+}
+function mostrarNotificacao(msg) {
+  const el = document.getElementById('notificacao');
+  el.textContent = msg;
+  el.classList.add('visivel');
+  setTimeout(() => el.classList.remove('visivel'), 2500);
+}
+function setSyncStatus(status) {
+  const dot = document.getElementById('sync-dot');
+  const texto = document.getElementById('sync-texto');
+  if (!dot) return;
+  dot.className = 'sync-dot' + (status === 'sincronizando' ? ' sincronizando' : status === 'erro' ? ' erro' : '');
+  texto.textContent = status === 'sincronizando' ? 'Salvando...' : status === 'erro' ? 'Erro de conexão' : 'Sincronizado';
+}
+function projetosOrdenados() {
+  if (!estado.projetos) return [];
+  return Object.values(estado.projetos).filter(p => p && p.ativo);
+}
+
+// ============================================================
+// FIREBASE — CARREGAR E SALVAR
+// ============================================================
+async function salvar(caminho, valor) {
+  setSyncStatus('sincronizando');
+  try {
+    await set(ref(db, caminho), valor);
+    setSyncStatus('ok');
+  } catch(e) {
+    setSyncStatus('erro');
+    console.error('Erro ao salvar:', e);
+  }
+}
+
+async function inicializar() {
+  try {
+    const snap = await get(ref(db, '/'));
+    if (snap.exists()) {
+      estado = snap.val();
+      // Garantir campos que podem estar faltando
+      if (!estado.ideias) estado.ideias = {};
+      if (!estado.aprenderDepois) estado.aprenderDepois = {};
+      if (!estado.checkins) estado.checkins = {};
+      if (!estado.consistencia) estado.consistencia = {};
+      if (!estado.rotinaHoje) estado.rotinaHoje = {};
+      if (!estado.tarefasHoje) estado.tarefasHoje = {};
+    } else {
+      // Primeiro acesso — salva estado padrão
+      estado = JSON.parse(JSON.stringify(ESTADO_PADRAO));
+      await set(ref(db, '/'), estado);
+    }
+    carregado = true;
+    document.getElementById('loading-screen').style.display = 'none';
+    mostrarAbertura();
+  } catch(e) {
+    console.error('Erro ao conectar Firebase:', e);
+    // Fallback offline com estado padrão
+    estado = JSON.parse(JSON.stringify(ESTADO_PADRAO));
+    carregado = true;
+    document.getElementById('loading-screen').style.display = 'none';
+    setSyncStatus('erro');
+    mostrarAbertura();
+  }
+}
+
+// ============================================================
+// ABERTURA
+// ============================================================
+function mostrarAbertura() {
+  document.getElementById('saudacao-hora').textContent = saudacaoPorHora();
+  document.getElementById('abertura-missao-texto').textContent = estado.missao || '';
+
+  const lista = document.getElementById('abertura-projetos-lista');
+  lista.innerHTML = '';
+  projetosOrdenados().forEach(p => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="projeto-dot"></span> ${p.emoji} ${p.nome}`;
+    lista.appendChild(li);
+  });
+
+  // Pendências de ontem
+  const ontem = new Date();
+  ontem.setDate(ontem.getDate() - 1);
+  const ontemStr = ontem.toISOString().split('T')[0];
+  const tarefasOntem = Object.values(estado.tarefasHoje || {}).filter(t => t && t.data === ontemStr && !t.concluida);
+
+  const bloco = document.getElementById('abertura-pendencias-bloco');
+  const listaPend = document.getElementById('abertura-pendencias-lista');
+  listaPend.innerHTML = '';
+  if (tarefasOntem.length > 0) {
+    bloco.style.display = 'block';
+    tarefasOntem.forEach(t => {
+      const li = document.createElement('li');
+      li.textContent = t.texto;
+      listaPend.appendChild(li);
+    });
+  } else {
+    bloco.style.display = 'none';
+  }
+
+  document.getElementById('tela-abertura').classList.add('ativa');
+}
+
+window.irParaPrincipal = function() {
+  document.getElementById('tela-abertura').classList.remove('ativa');
+  document.getElementById('tela-principal').classList.add('ativa');
+  navegar('hoje');
+};
+
+// ============================================================
+// NAVEGAÇÃO
+// ============================================================
+window.navegar = function(pagina) {
+  ['hoje','projetos','projeto-detalhe','estacionamento','checkin','consistencia'].forEach(p => {
+    const el = document.getElementById('pagina-' + p);
+    if (el) el.style.display = 'none';
+  });
+  ['hoje','projetos','estacionamento','checkin','consistencia'].forEach(n => {
+    const el = document.getElementById('nav-' + n);
+    if (el) el.classList.remove('ativo');
+  });
+
+  const alvo = document.getElementById('pagina-' + pagina);
+  if (alvo) alvo.style.display = 'block';
+  const navAtivo = document.getElementById('nav-' + pagina);
+  if (navAtivo) navAtivo.classList.add('ativo');
+
+  if (pagina === 'hoje') renderizarHoje();
+  if (pagina === 'projetos') renderizarProjetos();
+  if (pagina === 'estacionamento') renderizarEstacionamento();
+  if (pagina === 'checkin') renderizarCheckin();
+  if (pagina === 'consistencia') renderizarConsistencia();
+};
+
+// ============================================================
+// HOJE
+// ============================================================
+function renderizarHoje() {
+  const hoje = dataHoje();
+  const data = new Date();
+  const dias = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  document.getElementById('subtitulo-hoje').textContent = `${dias[data.getDay()]}, ${data.getDate()} de ${nomeMes(data.getMonth()).toLowerCase()}`;
+  document.getElementById('sidebar-missao').textContent = estado.missao || '';
+  document.getElementById('sidebar-data').textContent = `${data.getDate()} ${nomeMes(data.getMonth()).slice(0,3).toLowerCase()} ${data.getFullYear()}`;
+
+  const tarefasHoje = Object.values(estado.tarefasHoje || {}).filter(t => t && t.data === hoje);
+  const container = document.getElementById('tarefas-por-projeto');
+  const vazio = document.getElementById('tarefas-vazio');
+  container.innerHTML = '';
+
+  if (tarefasHoje.length === 0) {
+    vazio.style.display = 'block';
+  } else {
+    vazio.style.display = 'none';
+    const grupos = {};
+    const semProjeto = [];
+    tarefasHoje.forEach(t => {
+      if (t.projetoId) {
+        if (!grupos[t.projetoId]) grupos[t.projetoId] = [];
+        grupos[t.projetoId].push(t);
+      } else { semProjeto.push(t); }
+    });
+
+    projetosOrdenados().forEach(proj => {
+      if (grupos[proj.id] && grupos[proj.id].length > 0) {
+        const sec = document.createElement('div');
+        sec.className = 'secao-projeto';
+        sec.innerHTML = `<div class="secao-projeto-nome">${proj.emoji} ${proj.nome}</div>`;
+        grupos[proj.id].forEach(t => sec.appendChild(criarItemTarefa(t)));
+        container.appendChild(sec);
+      }
+    });
+    if (semProjeto.length > 0) {
+      const sec = document.createElement('div');
+      sec.className = 'secao-projeto';
+      sec.innerHTML = '<div class="secao-projeto-nome">Geral</div>';
+      semProjeto.forEach(t => sec.appendChild(criarItemTarefa(t)));
+      container.appendChild(sec);
+    }
+  }
+
+  // Select do modal
+  const sel = document.getElementById('modal-tarefa-projeto');
+  sel.innerHTML = '<option value="">Sem projeto</option>';
+  projetosOrdenados().forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = `${p.emoji} ${p.nome}`;
+    sel.appendChild(opt);
+  });
+
+  renderizarRotina();
+}
+
+function criarItemTarefa(tarefa) {
+  const div = document.createElement('div');
+  div.className = 'tarefa-item';
+  const check = document.createElement('div');
+  check.className = 'tarefa-check' + (tarefa.concluida ? ' concluida' : '');
+  check.onclick = () => toggleTarefa(tarefa.id);
+  const texto = document.createElement('span');
+  texto.className = 'tarefa-texto' + (tarefa.concluida ? ' concluida' : '');
+  texto.textContent = tarefa.texto;
+  const del = document.createElement('button');
+  del.className = 'tarefa-delete';
+  del.textContent = '×';
+  del.onclick = () => deletarTarefa(tarefa.id);
+  div.appendChild(check); div.appendChild(texto); div.appendChild(del);
+  return div;
+}
+
+async function toggleTarefa(id) {
+  if (!estado.tarefasHoje[id]) return;
+  const novoValor = !estado.tarefasHoje[id].concluida;
+  estado.tarefasHoje[id].concluida = novoValor;
+  renderizarHoje();
+  await salvar(`tarefasHoje/${id}/concluida`, novoValor);
+}
+
+async function deletarTarefa(id) {
+  delete estado.tarefasHoje[id];
+  renderizarHoje();
+  await salvar(`tarefasHoje/${id}`, null);
+  mostrarNotificacao('Tarefa removida');
+}
+
+// ============================================================
+// ROTINA
+// ============================================================
+function renderizarRotina() {
+  const hoje = dataHoje();
+  const rotinaHoje = (estado.rotinaHoje && estado.rotinaHoje[hoje]) || {};
+  const grid = document.getElementById('rotina-grid');
+  grid.innerHTML = '';
+  const itens = Object.values(estado.rotina || {});
+  itens.forEach(item => {
+    const div = document.createElement('div');
+    const feito = rotinaHoje[item] === true;
+    div.className = 'rotina-item' + (feito ? ' feito' : '');
+    div.textContent = item;
+    div.onclick = () => toggleRotina(item);
+    grid.appendChild(div);
+  });
+}
+
+async function toggleRotina(item) {
+  const hoje = dataHoje();
+  if (!estado.rotinaHoje) estado.rotinaHoje = {};
+  if (!estado.rotinaHoje[hoje]) estado.rotinaHoje[hoje] = {};
+  const novoValor = !estado.rotinaHoje[hoje][item];
+  estado.rotinaHoje[hoje][item] = novoValor;
+  renderizarRotina();
+  await salvar(`rotinaHoje/${hoje}/${item}`, novoValor);
+}
+
+window.abrirModalRotina = function() {
+  const lista = document.getElementById('modal-rotina-lista');
+  lista.innerHTML = '';
+  const itens = Object.entries(estado.rotina || {});
+  itens.forEach(([key, item]) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--border)';
+    div.innerHTML = `<span style="font-size:14px">${item}</span><button class="btn-mini danger" onclick="removerItemRotina('${key}')">remover</button>`;
+    lista.appendChild(div);
+  });
+  abrirModal('modal-rotina');
+};
+
+window.removerItemRotina = async function(key) {
+  delete estado.rotina[key];
+  await salvar(`rotina/${key}`, null);
+  window.abrirModalRotina();
+  renderizarRotina();
+};
+
+window.adicionarItemRotina = async function() {
+  const input = document.getElementById('modal-rotina-input');
+  const valor = input.value.trim();
+  if (!valor) return;
+  const key = gerarId();
+  if (!estado.rotina) estado.rotina = {};
+  estado.rotina[key] = valor;
+  await salvar(`rotina/${key}`, valor);
+  input.value = '';
+  window.abrirModalRotina();
+  renderizarRotina();
+  mostrarNotificacao('Item adicionado à rotina');
+};
+
+// ============================================================
+// PROJETOS
+// ============================================================
+function renderizarProjetos() {
+  const lista = document.getElementById('lista-projetos');
+  lista.innerHTML = '';
+  projetosOrdenados().forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'projeto-card';
+    card.onclick = () => abrirProjetoDetalhe(p.id);
+    const pendentes = Object.values(estado.tarefasHoje || {}).filter(t => t && t.projetoId === p.id && !t.concluida && t.data === dataHoje()).length;
+    card.innerHTML = `
+      <div class="projeto-icone">${p.emoji}</div>
+      <div class="projeto-info">
+        <div class="projeto-nome">${p.nome}</div>
+        <div class="projeto-meta">${p.descricao}${pendentes > 0 ? ` · ${pendentes} pendente${pendentes>1?'s':''}` : ''}</div>
+      </div>
+      <div class="projeto-arrow">›</div>`;
+    lista.appendChild(card);
+  });
+}
+
+function abrirProjetoDetalhe(projetoId) {
+  projetoDetalheAtual = projetoId;
+  const proj = estado.projetos && estado.projetos[projetoId];
+  if (!proj) return;
+
+  document.getElementById('detalhe-nome').textContent = `${proj.emoji} ${proj.nome}`;
+  document.getElementById('detalhe-descricao').textContent = proj.descricao;
+  document.getElementById('detalhe-objetivo').innerHTML = proj.objetivo
+    ? `<div class="objetivo-box"><div class="objetivo-label">Objetivo atual</div><div class="objetivo-texto">${proj.objetivo}</div></div>`
+    : '';
+
+  const tarefasEl = document.getElementById('detalhe-tarefas');
+  const tarefasProjeto = Object.values(estado.tarefasHoje || {}).filter(t => t && t.projetoId === projetoId);
+  tarefasEl.innerHTML = '';
+  if (tarefasProjeto.length === 0) {
+    tarefasEl.innerHTML = '<p style="font-size:14px;color:var(--text-muted);padding:0.5rem 0">Nenhuma tarefa ainda.</p>';
+  } else {
+    tarefasProjeto.forEach(t => tarefasEl.appendChild(criarItemTarefa(t)));
+  }
+
+  const fixasEl = document.getElementById('detalhe-tarefas-fixas');
+  fixasEl.innerHTML = '';
+  const fixas = Object.values(proj.tarefasFixas || {});
+  if (fixas.length === 0) {
+    fixasEl.innerHTML = '<p style="font-size:14px;color:var(--text-muted);padding:0.5rem 0">Nenhuma tarefa fixa.</p>';
+  } else {
+    fixas.forEach(tf => {
+      const div = document.createElement('div');
+      div.className = 'tarefa-item';
+      div.innerHTML = `
+        <div class="tarefa-check ${tf.concluida?'concluida':''}" onclick="toggleTarefaFixa('${projetoId}','${tf.id}')"></div>
+        <span class="tarefa-texto ${tf.concluida?'concluida':''}">${tf.texto}</span>
+        <span class="tarefa-fixa-badge">fixo</span>
+        <button class="tarefa-delete" onclick="deletarTarefaFixa('${projetoId}','${tf.id}')">×</button>`;
+      fixasEl.appendChild(div);
+    });
+  }
+
+  ['hoje','projetos','estacionamento','checkin','consistencia'].forEach(p => {
+    const el = document.getElementById('pagina-' + p);
+    if (el) el.style.display = 'none';
+  });
+  document.getElementById('pagina-projeto-detalhe').style.display = 'block';
+  document.getElementById('nav-projetos').classList.add('ativo');
+}
+
+window.toggleTarefaFixa = async function(projetoId, tarefaId) {
+  if (!estado.projetos[projetoId] || !estado.projetos[projetoId].tarefasFixas[tarefaId]) return;
+  const novoValor = !estado.projetos[projetoId].tarefasFixas[tarefaId].concluida;
+  estado.projetos[projetoId].tarefasFixas[tarefaId].concluida = novoValor;
+  abrirProjetoDetalhe(projetoId);
+  await salvar(`projetos/${projetoId}/tarefasFixas/${tarefaId}/concluida`, novoValor);
+};
+
+window.deletarTarefaFixa = async function(projetoId, tarefaId) {
+  delete estado.projetos[projetoId].tarefasFixas[tarefaId];
+  abrirProjetoDetalhe(projetoId);
+  await salvar(`projetos/${projetoId}/tarefasFixas/${tarefaId}`, null);
+  mostrarNotificacao('Tarefa fixa removida');
+};
+
+// ============================================================
+// ESTACIONAMENTO
+// ============================================================
+function renderizarEstacionamento() {
+  const listaIdeias = document.getElementById('lista-ideias');
+  listaIdeias.innerHTML = '';
+  const ideias = Object.values(estado.ideias || {}).sort((a,b) => b.data > a.data ? 1 : -1);
+  if (ideias.length === 0) {
+    listaIdeias.innerHTML = '<div class="empty-state"><div class="empty-state-icon">💡</div><div class="empty-state-texto">Nenhuma ideia estacionada ainda.</div></div>';
+  } else {
+    ideias.forEach(ideia => {
+      const div = document.createElement('div');
+      div.className = 'idea-item';
+      div.innerHTML = `<div class="idea-texto"><div class="idea-titulo">${ideia.texto}</div><div class="idea-data">${formatarData(ideia.data)}</div></div><div class="idea-acoes"><button class="btn-mini danger" onclick="deletarIdeia('${ideia.id}')">remover</button></div>`;
+      listaIdeias.appendChild(div);
+    });
+  }
+
+  const listaAprender = document.getElementById('lista-aprender');
+  listaAprender.innerHTML = '';
+  const aprender = Object.values(estado.aprenderDepois || {}).sort((a,b) => b.data > a.data ? 1 : -1);
+  if (aprender.length === 0) {
+    listaAprender.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📚</div><div class="empty-state-texto">Nenhum tópico guardado.</div></div>';
+  } else {
+    aprender.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'idea-item';
+      div.innerHTML = `<div class="idea-texto"><div class="idea-titulo">${item.texto}</div><div class="idea-data">${formatarData(item.data)}</div></div><div class="idea-acoes"><button class="btn-mini danger" onclick="deletarAprender('${item.id}')">remover</button></div>`;
+      listaAprender.appendChild(div);
+    });
+  }
+}
+
+window.deletarIdeia = async function(id) {
+  delete estado.ideias[id];
+  renderizarEstacionamento();
+  await salvar(`ideias/${id}`, null);
+  mostrarNotificacao('Ideia removida');
+};
+
+window.deletarAprender = async function(id) {
+  delete estado.aprenderDepois[id];
+  renderizarEstacionamento();
+  await salvar(`aprenderDepois/${id}`, null);
+  mostrarNotificacao('Item removido');
+};
+
+// ============================================================
+// CHECK-IN
+// ============================================================
+function renderizarCheckin() {
+  const checkins = Object.values(estado.checkins || {}).sort((a,b) => b.data > a.data ? 1 : -1);
+  const historico = document.getElementById('historico-checkins');
+  const lista = document.getElementById('lista-checkins');
+  lista.innerHTML = '';
+  if (checkins.length === 0) { historico.style.display = 'none'; return; }
+  historico.style.display = 'block';
+  checkins.slice(0,7).forEach(c => {
+    const div = document.createElement('div');
+    div.style.cssText = 'padding:0.75rem 0;border-bottom:1px solid var(--border)';
+    div.innerHTML = `
+      <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:0.5rem">${formatarData(c.data)}</div>
+      ${c.fiz ? `<p style="font-size:13px;color:var(--text-secondary);margin-bottom:0.25rem"><strong style="color:var(--text-primary)">Fiz:</strong> ${c.fiz}</p>` : ''}
+      ${c.proximo ? `<p style="font-size:13px;color:var(--text-secondary)"><strong style="color:var(--text-primary)">Próximo:</strong> ${c.proximo}</p>` : ''}`;
+    lista.appendChild(div);
+  });
+}
+
+window.salvarCheckin = async function() {
+  const hoje = dataHoje();
+  const checkin = {
+    data: hoje,
+    fiz: document.getElementById('checkin-fiz').value.trim(),
+    distrai: document.getElementById('checkin-distrai').value.trim(),
+    funcionou: document.getElementById('checkin-funcionou').value.trim(),
+    proximo: document.getElementById('checkin-proximo').value.trim()
+  };
+  if (!estado.checkins) estado.checkins = {};
+  estado.checkins[hoje] = checkin;
+  ['checkin-fiz','checkin-distrai','checkin-funcionou','checkin-proximo'].forEach(id => document.getElementById(id).value = '');
+  renderizarCheckin();
+  await salvar(`checkins/${hoje}`, checkin);
+  mostrarNotificacao('Reflexão do dia salva ✓');
+};
+
+// ============================================================
+// CONSISTÊNCIA
+// ============================================================
+function renderizarConsistencia() {
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = hoje.getMonth();
+  document.getElementById('consistencia-mes-titulo').textContent = `${nomeMes(mes)} ${ano}`;
+
+  const headerEl = document.getElementById('dias-semana-header');
+  headerEl.innerHTML = '';
+  ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'dia-header';
+    div.textContent = d;
+    headerEl.appendChild(div);
+  });
+
+  const grid = document.getElementById('consistencia-grid');
+  grid.innerHTML = '';
+  const primeiroDia = new Date(ano, mes, 1).getDay();
+  const totalDias = new Date(ano, mes + 1, 0).getDate();
+  const diaHoje = hoje.getDate();
+
+  for (let i = 0; i < primeiroDia; i++) {
+    const div = document.createElement('div');
+    div.className = 'dia-celula futuro';
+    grid.appendChild(div);
+  }
+  for (let d = 1; d <= totalDias; d++) {
+    const dataStr = `${ano}-${String(mes+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const status = estado.consistencia && estado.consistencia[dataStr];
+    const div = document.createElement('div');
+    let cls = 'dia-celula ';
+    if (d > diaHoje) cls += 'futuro';
+    else if (status === 'feito') cls += 'feito';
+    else if (status === 'parcial') cls += 'parcial';
+    else if (status === 'nao-feito') cls += 'nao-feito';
+    else cls += 'vazio';
+    if (d === diaHoje) cls += ' hoje';
+    div.className = cls;
+    div.textContent = d;
+    grid.appendChild(div);
+  }
+}
+
+window.marcarDia = async function(status) {
+  const hoje = dataHoje();
+  if (!estado.consistencia) estado.consistencia = {};
+  estado.consistencia[hoje] = status;
+  renderizarConsistencia();
+  await salvar(`consistencia/${hoje}`, status);
+  mostrarNotificacao('Dia marcado ✓');
+};
+
+// ============================================================
+// MODAIS
+// ============================================================
+window.abrirModal = function(id) {
+  document.getElementById(id).classList.add('aberto');
+  const input = document.querySelector(`#${id} input`);
+  if (input) setTimeout(() => input.focus(), 50);
+};
+window.fecharModal = function(id) {
+  document.getElementById(id).classList.remove('aberto');
+  document.querySelectorAll(`#${id} input, #${id} textarea`).forEach(i => i.value = '');
+};
+
+window.confirmarTarefa = async function() {
+  const texto = document.getElementById('modal-tarefa-input').value.trim();
+  if (!texto) return;
+  const projetoId = document.getElementById('modal-tarefa-projeto').value || null;
+  const id = gerarId();
+  const tarefa = { id, texto, projetoId, data: dataHoje(), concluida: false };
+  if (!estado.tarefasHoje) estado.tarefasHoje = {};
+  estado.tarefasHoje[id] = tarefa;
+  fecharModal('modal-tarefa');
+  renderizarHoje();
+  await salvar(`tarefasHoje/${id}`, tarefa);
+  mostrarNotificacao('Tarefa adicionada ✓');
+};
+
+window.confirmarIdeia = async function() {
+  const texto = document.getElementById('modal-ideia-input').value.trim();
+  if (!texto) return;
+  const id = gerarId();
+  const ideia = { id, texto, data: dataHoje() };
+  if (!estado.ideias) estado.ideias = {};
+  estado.ideias[id] = ideia;
+  fecharModal('modal-ideia');
+  renderizarEstacionamento();
+  await salvar(`ideias/${id}`, ideia);
+  mostrarNotificacao('Ideia estacionada ✓');
+};
+
+window.confirmarAprender = async function() {
+  const texto = document.getElementById('modal-aprender-input').value.trim();
+  if (!texto) return;
+  const id = gerarId();
+  const item = { id, texto, data: dataHoje() };
+  if (!estado.aprenderDepois) estado.aprenderDepois = {};
+  estado.aprenderDepois[id] = item;
+  fecharModal('modal-aprender');
+  renderizarEstacionamento();
+  await salvar(`aprenderDepois/${id}`, item);
+  mostrarNotificacao('Guardado para aprender depois ✓');
+};
+
+window.confirmarProjeto = async function() {
+  const nome = document.getElementById('modal-projeto-nome').value.trim();
+  if (!nome) return;
+  const id = gerarId();
+  const proj = {
+    id, nome,
+    descricao: document.getElementById('modal-projeto-descricao').value.trim(),
+    objetivo: document.getElementById('modal-projeto-objetivo').value.trim(),
+    emoji: document.getElementById('modal-projeto-emoji').value.trim() || '📁',
+    ativo: true, tarefasFixas: {}
+  };
+  if (!estado.projetos) estado.projetos = {};
+  estado.projetos[id] = proj;
+  fecharModal('modal-projeto');
+  renderizarProjetos();
+  await salvar(`projetos/${id}`, proj);
+  mostrarNotificacao('Projeto criado ✓');
+};
+
+window.abrirModalTarefaProjeto = function() { abrirModal('modal-tarefa-projeto'); };
+
+window.confirmarTarefaProjeto = async function() {
+  const texto = document.getElementById('modal-tarefa-projeto-input').value.trim();
+  if (!texto || !projetoDetalheAtual) return;
+  const id = gerarId();
+  const tarefa = { id, texto, projetoId: projetoDetalheAtual, data: dataHoje(), concluida: false };
+  if (!estado.tarefasHoje) estado.tarefasHoje = {};
+  estado.tarefasHoje[id] = tarefa;
+  fecharModal('modal-tarefa-projeto');
+  abrirProjetoDetalhe(projetoDetalheAtual);
+  await salvar(`tarefasHoje/${id}`, tarefa);
+  mostrarNotificacao('Tarefa adicionada ✓');
+};
+
+window.confirmarTarefaFixa = async function() {
+  const texto = document.getElementById('modal-tarefa-fixa-input').value.trim();
+  if (!texto || !projetoDetalheAtual) return;
+  const id = gerarId();
+  const tf = { id, texto, concluida: false };
+  if (!estado.projetos[projetoDetalheAtual].tarefasFixas) estado.projetos[projetoDetalheAtual].tarefasFixas = {};
+  estado.projetos[projetoDetalheAtual].tarefasFixas[id] = tf;
+  fecharModal('modal-tarefa-fixa');
+  abrirProjetoDetalhe(projetoDetalheAtual);
+  await salvar(`projetos/${projetoDetalheAtual}/tarefasFixas/${id}`, tf);
+  mostrarNotificacao('Tarefa fixa adicionada ✓');
+};
+
+// ESC e click fora
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.aberto').forEach(m => m.classList.remove('aberto'));
+  if (e.key === 'Enter') {
+    const modal = document.querySelector('.modal-overlay.aberto');
+    if (!modal) return;
+    const id = modal.id;
+    if (id === 'modal-tarefa') window.confirmarTarefa();
+    if (id === 'modal-ideia') window.confirmarIdeia();
+    if (id === 'modal-aprender') window.confirmarAprender();
+    if (id === 'modal-projeto') window.confirmarProjeto();
+    if (id === 'modal-tarefa-projeto') window.confirmarTarefaProjeto();
+    if (id === 'modal-tarefa-fixa') window.confirmarTarefaFixa();
+  }
+});
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('aberto'); });
+});
+
+// ============================================================
+// INICIAR
+// ============================================================
+inicializar();
+</script>
+</body>
+</html>
