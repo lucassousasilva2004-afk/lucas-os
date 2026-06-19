@@ -180,9 +180,75 @@
   .empty-state-icon { font-size: 32px; margin-bottom: 0.75rem; }
   .empty-state-texto { font-size: 14px; }
 
+  /* ===== V2 ===== */
+
+  /* MODO ATUAL */
+  .modo-barra { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .modo-chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.9rem; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-card); cursor: pointer; font-size: 13px; color: var(--text-secondary); transition: all 0.15s; user-select: none; }
+  .modo-chip:hover { border-color: var(--border-hover); color: var(--text-primary); }
+  .modo-chip.ativo { background: var(--cinza-900); border-color: var(--cinza-900); color: white; font-weight: 500; }
+  .modo-chip-editar { color: var(--text-muted); border-style: dashed; }
+  .modo-status { font-size: 13px; color: var(--text-muted); margin-left: 0.25rem; }
+  .modo-status strong { color: var(--text-primary); }
+
+  /* ÂNCORA DO DIA */
+  .ancora-card { background: linear-gradient(135deg, #FFF8E8 0%, #FFFCF5 100%); border: 1px solid #F0DFA8; border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; box-shadow: var(--shadow-sm); }
+  .ancora-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #B8860B; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
+  .ancora-conteudo { display: flex; align-items: center; gap: 0.75rem; }
+  .ancora-texto { font-size: 17px; font-weight: 600; color: var(--cinza-900); flex: 1; line-height: 1.4; }
+  .ancora-texto.concluida { text-decoration: line-through; color: var(--text-muted); }
+  .ancora-check { width: 24px; height: 24px; border-radius: 6px; border: 2px solid #D4AF37; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: white; transition: all 0.15s; }
+  .ancora-check.concluida { background: #D4AF37; border-color: #D4AF37; }
+  .ancora-check.concluida::after { content: ''; width: 11px; height: 6px; border-left: 2.5px solid white; border-bottom: 2.5px solid white; transform: rotate(-45deg) translateY(-1px); }
+  .ancora-vazia { display: flex; flex-direction: column; gap: 0.6rem; }
+  .ancora-vazia-texto { font-size: 14px; color: #9A7B2E; }
+  .btn-eleger { align-self: flex-start; padding: 0.45rem 0.9rem; border-radius: var(--radius-sm); border: 1px solid #D4AF37; background: white; color: #B8860B; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.12s; }
+  .btn-eleger:hover { background: #D4AF37; color: white; }
+  .btn-trocar-ancora { font-size: 11px; color: #B8860B; background: none; border: none; cursor: pointer; text-decoration: underline; padding: 0; margin-top: 0.5rem; }
+
+  /* URGÊNCIA */
+  .urgencia-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .urgencia-urgente { background: #E24B4A; }
+  .urgencia-medio { background: #F0A92E; }
+  .urgencia-tranquilo { background: #3B9DD8; }
+  .tarefa-meta { display: flex; align-items: center; gap: 0.5rem; margin-top: 2px; }
+  .tarefa-horario { font-size: 11px; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.2rem; background: var(--cinza-50); padding: 0.1rem 0.4rem; border-radius: 4px; }
+  .tarefa-horario.atrasada { background: #FCEBEB; color: #C0392B; }
+  .tarefa-corpo { flex: 1; display: flex; flex-direction: column; }
+
+  /* SELETOR DE URGÊNCIA NO MODAL */
+  .urgencia-seletor { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+  .urgencia-opcao { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 13px; color: var(--text-secondary); transition: all 0.12s; }
+  .urgencia-opcao:hover { border-color: var(--border-hover); }
+  .urgencia-opcao.selecionada { border-width: 2px; font-weight: 500; color: var(--text-primary); }
+  .urgencia-opcao.sel-urgente { border-color: #E24B4A; background: #FCEBEB; }
+  .urgencia-opcao.sel-medio { border-color: #F0A92E; background: #FEF6E7; }
+  .urgencia-opcao.sel-tranquilo { border-color: #3B9DD8; background: #EAF5FB; }
+  .modal-label { font-size: 12px; color: var(--text-muted); margin-top: 0.75rem; margin-bottom: 0.25rem; display: block; }
+
+  /* COMPROMISSOS / AGENDA */
+  .compromisso-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.5rem; border-bottom: 1px solid var(--border); }
+  .compromisso-item:last-child { border-bottom: none; }
+  .compromisso-hora { font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); padding: 0.25rem 0.5rem; border-radius: 5px; flex-shrink: 0; min-width: 52px; text-align: center; }
+  .compromisso-texto { font-size: 14px; color: var(--text-primary); flex: 1; }
+  .compromisso-data { font-size: 12px; color: var(--text-muted); }
+  .agenda-dia-grupo { margin-bottom: 1.25rem; }
+  .agenda-dia-titulo { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .agenda-hoje-destaque { color: var(--accent); }
+
+  /* CONSISTÊNCIA AUTO — legenda atualizada */
+  .consistencia-info { font-size: 13px; color: var(--text-secondary); background: var(--cinza-50); padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; line-height: 1.5; }
+  .streak-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 14px; font-weight: 600; color: var(--accent-verde); margin-top: 0.75rem; }
+
   @media (max-width: 700px) {
-    .sidebar { display: none; }
-    .conteudo { padding: 1.25rem 1rem; }
+    .sidebar { position: fixed; bottom: 0; top: auto; left: 0; right: 0; width: 100%; height: auto; min-height: 0; flex-direction: row; border-right: none; border-top: 1px solid var(--border); padding: 0.4rem 0.5rem; z-index: 50; justify-content: space-around; }
+    .sidebar-logo, .sidebar-missao, .sidebar-footer { display: none; }
+    .sidebar-nav { flex-direction: row; justify-content: space-around; width: 100%; gap: 0; }
+    .sidebar-nav li button { flex-direction: column; gap: 0.2rem; font-size: 10px; padding: 0.4rem 0.3rem; text-align: center; }
+    .sidebar-nav li svg { width: 20px; height: 20px; }
+    .conteudo { padding: 1.25rem 1rem 5rem 1rem; }
+    .ancora-texto { font-size: 16px; }
+    .modo-barra { gap: 0.4rem; }
   }
 </style>
 </head>
@@ -239,10 +305,10 @@
           Ideias
         </button>
       </li>
-      <li id="nav-checkin">
-        <button onclick="navegar('checkin')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          Check-in
+      <li id="nav-agenda">
+        <button onclick="navegar('agenda')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>
+          Agenda
         </button>
       </li>
       <li id="nav-consistencia">
@@ -265,10 +331,24 @@
   <div id="pagina-hoje" class="conteudo">
     <h1 class="pagina-titulo">Hoje</h1>
     <p class="pagina-subtitulo" id="subtitulo-hoje"></p>
+
+    <!-- MODO ATUAL -->
+    <div class="modo-barra" id="modo-barra"></div>
+
+    <!-- ÂNCORA DO DIA -->
+    <div id="ancora-container"></div>
+
+    <!-- COMPROMISSOS DE HOJE -->
+    <div class="card" id="compromissos-hoje-card" style="display:none">
+      <div class="card-titulo">Compromissos de hoje</div>
+      <div id="compromissos-hoje-lista"></div>
+    </div>
+
+    <!-- TAREFAS -->
     <div class="card">
       <div class="card-titulo">
-        Tarefas do dia
-        <button class="btn-add-flutuante" onclick="abrirModal('modal-tarefa')" style="margin:0;font-size:12px;padding:0.2rem 0.6rem">+ nova tarefa</button>
+        Tarefas
+        <button class="btn-add-flutuante" onclick="abrirModalTarefaHoje()" style="margin:0;font-size:12px;padding:0.2rem 0.6rem">+ nova tarefa</button>
       </div>
       <div id="tarefas-por-projeto"></div>
       <div id="tarefas-vazio" class="empty-state" style="display:none">
@@ -276,9 +356,21 @@
         <div class="empty-state-texto">Nenhuma tarefa ainda. Adicione a primeira.</div>
       </div>
     </div>
+
+    <!-- CHECKLIST DIÁRIO -->
     <div class="card">
-      <div class="card-titulo">Rotina <button class="btn-mini" onclick="abrirModalRotina()">editar</button></div>
+      <div class="card-titulo">Checklist diário <button class="btn-mini" onclick="abrirModalRotina()">editar</button></div>
       <div class="rotina-grid" id="rotina-grid"></div>
+    </div>
+  </div>
+
+  <!-- AGENDA -->
+  <div id="pagina-agenda" class="conteudo" style="display:none">
+    <h1 class="pagina-titulo">Agenda</h1>
+    <p class="pagina-subtitulo">Compromissos e datas importantes</p>
+    <div class="card">
+      <div class="card-titulo">Próximos compromissos <button class="btn-mini" onclick="abrirModal('modal-compromisso')">+ novo</button></div>
+      <div id="lista-compromissos"></div>
     </div>
   </div>
 
@@ -326,47 +418,19 @@
     </div>
   </div>
 
-  <!-- CHECK-IN -->
-  <div id="pagina-checkin" class="conteudo" style="display:none">
-    <h1 class="pagina-titulo">Check-in do dia</h1>
-    <p class="pagina-subtitulo">Reflexão rápida. Sem pressão.</p>
-    <div class="card">
-      <div class="card-titulo">Encerrar o dia</div>
-      <div class="checkin-pergunta"><span class="checkin-label">O que eu fiz hoje?</span><textarea class="textarea-full" id="checkin-fiz" rows="2" placeholder="Resumo rápido..."></textarea></div>
-      <div class="checkin-pergunta"><span class="checkin-label">O que me distraiu?</span><textarea class="textarea-full" id="checkin-distrai" rows="2" placeholder="Sem julgamento..."></textarea></div>
-      <div class="checkin-pergunta"><span class="checkin-label">O que funcionou?</span><textarea class="textarea-full" id="checkin-funcionou" rows="2" placeholder="O que vale repetir?"></textarea></div>
-      <div class="checkin-pergunta"><span class="checkin-label">Qual é o próximo passo?</span><textarea class="textarea-full" id="checkin-proximo" rows="2" placeholder="Uma coisa clara para amanhã..."></textarea></div>
-      <button class="btn-principal" onclick="salvarCheckin()">Salvar reflexão do dia</button>
-    </div>
-    <div class="card" id="historico-checkins" style="display:none">
-      <div class="card-titulo">Histórico</div>
-      <div id="lista-checkins"></div>
-    </div>
-  </div>
-
   <!-- CONSISTÊNCIA -->
   <div id="pagina-consistencia" class="conteudo" style="display:none">
     <h1 class="pagina-titulo">Consistência</h1>
     <p class="pagina-subtitulo">Não é produtividade. É presença.</p>
     <div class="card">
+      <div class="consistencia-info">
+        O calendário se preenche sozinho conforme você usa o app.<br>
+        🟩 Verde — você concluiu a âncora do dia &nbsp; 🟨 Amarelo — usou o app e marcou algo &nbsp; 🟥 Vermelho — nenhum registro no dia.
+      </div>
       <div class="card-titulo" id="consistencia-mes-titulo"></div>
       <div class="consistencia-grid" id="dias-semana-header"></div>
       <div class="consistencia-grid" id="consistencia-grid"></div>
-      <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap">
-        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:var(--verde-400)"></div>Feito</div>
-        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:#FAC775"></div>Parcial</div>
-        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:#F09595"></div>Não fiz</div>
-        <div style="display:flex;align-items:center;gap:0.4rem;font-size:12px;color:var(--text-muted)"><div style="width:12px;height:12px;border-radius:2px;background:var(--cinza-100)"></div>Sem registro</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-titulo">Marcar hoje</div>
-      <p style="font-size:14px;color:var(--text-secondary);margin-bottom:1rem">Como foi o dia de hoje?</p>
-      <div style="display:flex;gap:0.75rem;flex-wrap:wrap">
-        <button class="btn-secundario" onclick="marcarDia('feito')" style="padding:0.6rem 1.25rem">🟩 Feito</button>
-        <button class="btn-secundario" onclick="marcarDia('parcial')" style="padding:0.6rem 1.25rem">🟨 Parcial</button>
-        <button class="btn-secundario" onclick="marcarDia('nao-feito')" style="padding:0.6rem 1.25rem">🟥 Não fiz</button>
-      </div>
+      <div class="streak-badge" id="streak-badge"></div>
     </div>
   </div>
 </div>
@@ -377,6 +441,14 @@
     <div class="modal-titulo">Nova tarefa</div>
     <input type="text" class="input-full" id="modal-tarefa-input" placeholder="O que precisa ser feito?">
     <select class="select-projeto" id="modal-tarefa-projeto"><option value="">Sem projeto</option></select>
+    <span class="modal-label">Urgência</span>
+    <div class="urgencia-seletor" id="modal-tarefa-urgencia">
+      <div class="urgencia-opcao" data-urg="urgente" onclick="selecionarUrgencia('modal-tarefa', 'urgente')"><span class="urgencia-dot urgencia-urgente" style="margin:0"></span> Urgente</div>
+      <div class="urgencia-opcao selecionada sel-medio" data-urg="medio" onclick="selecionarUrgencia('modal-tarefa', 'medio')"><span class="urgencia-dot urgencia-medio" style="margin:0"></span> Médio</div>
+      <div class="urgencia-opcao" data-urg="tranquilo" onclick="selecionarUrgencia('modal-tarefa', 'tranquilo')"><span class="urgencia-dot urgencia-tranquilo" style="margin:0"></span> Tranquilo</div>
+    </div>
+    <span class="modal-label">Horário de entrega (opcional)</span>
+    <input type="time" class="input-full" id="modal-tarefa-horario">
     <div class="modal-acoes">
       <button class="btn-secundario" onclick="fecharModal('modal-tarefa')">Cancelar</button>
       <button class="btn-confirmar" onclick="confirmarTarefa()">Adicionar</button>
@@ -424,6 +496,14 @@
   <div class="modal-box">
     <div class="modal-titulo">Nova tarefa</div>
     <input type="text" class="input-full" id="modal-tarefa-projeto-input" placeholder="Descrição da tarefa">
+    <span class="modal-label">Urgência</span>
+    <div class="urgencia-seletor" id="modal-tarefa-projeto-urgencia">
+      <div class="urgencia-opcao" data-urg="urgente" onclick="selecionarUrgencia('modal-tarefa-projeto', 'urgente')"><span class="urgencia-dot urgencia-urgente" style="margin:0"></span> Urgente</div>
+      <div class="urgencia-opcao selecionada sel-medio" data-urg="medio" onclick="selecionarUrgencia('modal-tarefa-projeto', 'medio')"><span class="urgencia-dot urgencia-medio" style="margin:0"></span> Médio</div>
+      <div class="urgencia-opcao" data-urg="tranquilo" onclick="selecionarUrgencia('modal-tarefa-projeto', 'tranquilo')"><span class="urgencia-dot urgencia-tranquilo" style="margin:0"></span> Tranquilo</div>
+    </div>
+    <span class="modal-label">Horário de entrega (opcional)</span>
+    <input type="time" class="input-full" id="modal-tarefa-projeto-horario">
     <div class="modal-acoes">
       <button class="btn-secundario" onclick="fecharModal('modal-tarefa-projeto')">Cancelar</button>
       <button class="btn-confirmar" onclick="confirmarTarefaProjeto()">Adicionar</button>
@@ -444,15 +524,59 @@
 
 <div id="modal-rotina" class="modal-overlay">
   <div class="modal-box">
-    <div class="modal-titulo">Editar rotina</div>
-    <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.75rem">Adicione ou remova itens da sua rotina diária</p>
+    <div class="modal-titulo">Editar checklist diário</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.75rem">Adicione ou remova itens do seu checklist diário</p>
     <div id="modal-rotina-lista" style="margin-bottom:0.75rem"></div>
     <div style="display:flex;gap:0.5rem">
-      <input type="text" class="input-full" id="modal-rotina-input" placeholder="Novo item de rotina">
+      <input type="text" class="input-full" id="modal-rotina-input" placeholder="Novo item">
       <button class="btn-confirmar" onclick="adicionarItemRotina()">+</button>
     </div>
     <div class="modal-acoes" style="margin-top:0.75rem">
       <button class="btn-confirmar" onclick="fecharModal('modal-rotina')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ELEGER ÂNCORA -->
+<div id="modal-ancora" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">⭐ Âncora do dia</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.75rem">Qual é a tarefa mais importante de hoje? A que, se você concluir, o dia já valeu.</p>
+    <div id="modal-ancora-lista" style="max-height:300px;overflow-y:auto"></div>
+    <div class="modal-acoes" style="margin-top:0.75rem">
+      <button class="btn-secundario" onclick="fecharModal('modal-ancora')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMPROMISSO -->
+<div id="modal-compromisso" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Novo compromisso</div>
+    <input type="text" class="input-full" id="modal-compromisso-texto" placeholder="Ex: Reunião com a Casa da Lingerie">
+    <span class="modal-label">Data</span>
+    <input type="date" class="input-full" id="modal-compromisso-data">
+    <span class="modal-label">Horário (opcional)</span>
+    <input type="time" class="input-full" id="modal-compromisso-hora">
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-compromisso')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarCompromisso()">Marcar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDITAR MODOS -->
+<div id="modal-modos" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Editar modos</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:0.75rem">Seus modos de vida. Ative um na tela Hoje para marcar o que está fazendo agora.</p>
+    <div id="modal-modos-lista" style="margin-bottom:0.75rem"></div>
+    <div style="display:flex;gap:0.5rem">
+      <input type="text" class="input-full" id="modal-modos-input" placeholder="Ex: 🏋️ Academia">
+      <button class="btn-confirmar" onclick="adicionarModo()">+</button>
+    </div>
+    <div class="modal-acoes" style="margin-top:0.75rem">
+      <button class="btn-confirmar" onclick="fecharModal('modal-modos')">Fechar</button>
     </div>
   </div>
 </div>
@@ -493,8 +617,11 @@ const ESTADO_PADRAO = {
   rotinaHoje: {},
   ideias: {},
   aprenderDepois: {},
-  checkins: {},
-  consistencia: {}
+  consistencia: {},
+  modos: { m0: '💼 Trabalho', m1: '🛋️ Descanso', m2: '🏋️ Academia', m3: '🌅 Vida' },
+  modoAtual: '',
+  agenda: {},
+  ancoras: {}
 };
 
 let estado = {};
@@ -559,10 +686,16 @@ async function inicializar() {
       // Garantir campos que podem estar faltando
       if (!estado.ideias) estado.ideias = {};
       if (!estado.aprenderDepois) estado.aprenderDepois = {};
-      if (!estado.checkins) estado.checkins = {};
       if (!estado.consistencia) estado.consistencia = {};
       if (!estado.rotinaHoje) estado.rotinaHoje = {};
       if (!estado.tarefasHoje) estado.tarefasHoje = {};
+      // Campos novos do V2
+      if (!estado.modos) { estado.modos = JSON.parse(JSON.stringify(ESTADO_PADRAO.modos)); await set(ref(db, 'modos'), estado.modos); }
+      if (estado.modoAtual === undefined) estado.modoAtual = '';
+      if (!estado.agenda) estado.agenda = {};
+      if (!estado.ancoras) estado.ancoras = {};
+      // Migrar pendências: tarefas não concluídas de dias passados vêm para hoje
+      migrarPendencias();
     } else {
       // Primeiro acesso — salva estado padrão
       estado = JSON.parse(JSON.stringify(ESTADO_PADRAO));
@@ -630,11 +763,11 @@ window.irParaPrincipal = function() {
 // NAVEGAÇÃO
 // ============================================================
 window.navegar = function(pagina) {
-  ['hoje','projetos','projeto-detalhe','estacionamento','checkin','consistencia'].forEach(p => {
+  ['hoje','projetos','projeto-detalhe','estacionamento','agenda','consistencia'].forEach(p => {
     const el = document.getElementById('pagina-' + p);
     if (el) el.style.display = 'none';
   });
-  ['hoje','projetos','estacionamento','checkin','consistencia'].forEach(n => {
+  ['hoje','projetos','estacionamento','agenda','consistencia'].forEach(n => {
     const el = document.getElementById('nav-' + n);
     if (el) el.classList.remove('ativo');
   });
@@ -647,7 +780,7 @@ window.navegar = function(pagina) {
   if (pagina === 'hoje') renderizarHoje();
   if (pagina === 'projetos') renderizarProjetos();
   if (pagina === 'estacionamento') renderizarEstacionamento();
-  if (pagina === 'checkin') renderizarCheckin();
+  if (pagina === 'agenda') renderizarAgenda();
   if (pagina === 'consistencia') renderizarConsistencia();
 };
 
@@ -662,6 +795,10 @@ function renderizarHoje() {
   document.getElementById('sidebar-missao').textContent = estado.missao || '';
   document.getElementById('sidebar-data').textContent = `${data.getDate()} ${nomeMes(data.getMonth()).slice(0,3).toLowerCase()} ${data.getFullYear()}`;
 
+  renderizarModos();
+  renderizarAncora();
+  renderizarCompromissosHoje();
+
   const tarefasHoje = Object.values(estado.tarefasHoje || {}).filter(t => t && t.data === hoje);
   const container = document.getElementById('tarefas-por-projeto');
   const vazio = document.getElementById('tarefas-vazio');
@@ -674,7 +811,7 @@ function renderizarHoje() {
     const grupos = {};
     const semProjeto = [];
     tarefasHoje.forEach(t => {
-      if (t.projetoId) {
+      if (t.projetoId && estado.projetos && estado.projetos[t.projetoId]) {
         if (!grupos[t.projetoId]) grupos[t.projetoId] = [];
         grupos[t.projetoId].push(t);
       } else { semProjeto.push(t); }
@@ -685,7 +822,7 @@ function renderizarHoje() {
         const sec = document.createElement('div');
         sec.className = 'secao-projeto';
         sec.innerHTML = `<div class="secao-projeto-nome">${proj.emoji} ${proj.nome}</div>`;
-        grupos[proj.id].forEach(t => sec.appendChild(criarItemTarefa(t)));
+        ordenarPorUrgencia(grupos[proj.id]).forEach(t => sec.appendChild(criarItemTarefa(t)));
         container.appendChild(sec);
       }
     });
@@ -693,12 +830,11 @@ function renderizarHoje() {
       const sec = document.createElement('div');
       sec.className = 'secao-projeto';
       sec.innerHTML = '<div class="secao-projeto-nome">Geral</div>';
-      semProjeto.forEach(t => sec.appendChild(criarItemTarefa(t)));
+      ordenarPorUrgencia(semProjeto).forEach(t => sec.appendChild(criarItemTarefa(t)));
       container.appendChild(sec);
     }
   }
 
-  // Select do modal
   const sel = document.getElementById('modal-tarefa-projeto');
   sel.innerHTML = '<option value="">Sem projeto</option>';
   projetosOrdenados().forEach(p => {
@@ -711,20 +847,61 @@ function renderizarHoje() {
   renderizarRotina();
 }
 
+const PESO_URGENCIA = { urgente: 0, medio: 1, tranquilo: 2 };
+function ordenarPorUrgencia(lista) {
+  return lista.slice().sort((a, b) => {
+    const pa = PESO_URGENCIA[a.urgencia || 'medio'];
+    const pb = PESO_URGENCIA[b.urgencia || 'medio'];
+    if (pa !== pb) return pa - pb;
+    // depois por horário (quem tem horário primeiro)
+    if (a.horario && b.horario) return a.horario < b.horario ? -1 : 1;
+    if (a.horario) return -1;
+    if (b.horario) return 1;
+    return 0;
+  });
+}
+
 function criarItemTarefa(tarefa) {
   const div = document.createElement('div');
   div.className = 'tarefa-item';
+
   const check = document.createElement('div');
   check.className = 'tarefa-check' + (tarefa.concluida ? ' concluida' : '');
   check.onclick = () => toggleTarefa(tarefa.id);
+
+  const dot = document.createElement('div');
+  dot.className = 'urgencia-dot urgencia-' + (tarefa.urgencia || 'medio');
+  dot.title = 'Urgência: ' + (tarefa.urgencia || 'medio');
+
+  const corpo = document.createElement('div');
+  corpo.className = 'tarefa-corpo';
   const texto = document.createElement('span');
   texto.className = 'tarefa-texto' + (tarefa.concluida ? ' concluida' : '');
   texto.textContent = tarefa.texto;
+  corpo.appendChild(texto);
+
+  if (tarefa.horario) {
+    const meta = document.createElement('div');
+    meta.className = 'tarefa-meta';
+    const h = document.createElement('span');
+    const agora = new Date();
+    const atrasada = !tarefa.concluida && tarefa.data === dataHoje() &&
+      tarefa.horario < `${String(agora.getHours()).padStart(2,'0')}:${String(agora.getMinutes()).padStart(2,'0')}`;
+    h.className = 'tarefa-horario' + (atrasada ? ' atrasada' : '');
+    h.textContent = '🕐 ' + tarefa.horario;
+    meta.appendChild(h);
+    corpo.appendChild(meta);
+  }
+
   const del = document.createElement('button');
   del.className = 'tarefa-delete';
   del.textContent = '×';
   del.onclick = () => deletarTarefa(tarefa.id);
-  div.appendChild(check); div.appendChild(texto); div.appendChild(del);
+
+  div.appendChild(check);
+  div.appendChild(dot);
+  div.appendChild(corpo);
+  div.appendChild(del);
   return div;
 }
 
@@ -732,6 +909,13 @@ async function toggleTarefa(id) {
   if (!estado.tarefasHoje[id]) return;
   const novoValor = !estado.tarefasHoje[id].concluida;
   estado.tarefasHoje[id].concluida = novoValor;
+  // Se for a âncora de hoje, atualiza consistência
+  const hoje = dataHoje();
+  if (estado.ancoras && estado.ancoras[hoje] === id) {
+    atualizarConsistenciaAuto();
+  } else {
+    registrarAtividade();
+  }
   renderizarHoje();
   await salvar(`tarefasHoje/${id}/concluida`, novoValor);
 }
@@ -741,6 +925,276 @@ async function deletarTarefa(id) {
   renderizarHoje();
   await salvar(`tarefasHoje/${id}`, null);
   mostrarNotificacao('Tarefa removida');
+}
+
+// ============================================================
+// MIGRAÇÃO DE PENDÊNCIAS — tarefas não concluídas de dias passados vêm para hoje
+// ============================================================
+function migrarPendencias() {
+  const hoje = dataHoje();
+  let mudou = false;
+  Object.values(estado.tarefasHoje || {}).forEach(t => {
+    if (t && !t.concluida && t.data < hoje) {
+      t.dataOriginal = t.dataOriginal || t.data;
+      t.data = hoje;
+      t.pendente = true;
+      mudou = true;
+      salvar(`tarefasHoje/${t.id}`, t);
+    }
+  });
+  return mudou;
+}
+
+// ============================================================
+// MODOS
+// ============================================================
+function renderizarModos() {
+  const barra = document.getElementById('modo-barra');
+  barra.innerHTML = '';
+  const modos = Object.entries(estado.modos || {});
+  modos.forEach(([key, nome]) => {
+    const chip = document.createElement('div');
+    chip.className = 'modo-chip' + (estado.modoAtual === key ? ' ativo' : '');
+    chip.textContent = nome;
+    chip.onclick = () => ativarModo(key);
+    barra.appendChild(chip);
+  });
+  const editar = document.createElement('div');
+  editar.className = 'modo-chip modo-chip-editar';
+  editar.textContent = '⚙️ editar';
+  editar.onclick = abrirModalModos;
+  barra.appendChild(editar);
+}
+
+async function ativarModo(key) {
+  // Clicar no modo já ativo desliga
+  estado.modoAtual = (estado.modoAtual === key) ? '' : key;
+  renderizarModos();
+  registrarAtividade();
+  await salvar('modoAtual', estado.modoAtual);
+  if (estado.modoAtual) mostrarNotificacao('Modo: ' + estado.modos[key]);
+}
+
+function abrirModalModos() {
+  const lista = document.getElementById('modal-modos-lista');
+  lista.innerHTML = '';
+  Object.entries(estado.modos || {}).forEach(([key, nome]) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--border)';
+    div.innerHTML = `<span style="font-size:14px">${nome}</span><button class="btn-mini danger" onclick="removerModo('${key}')">remover</button>`;
+    lista.appendChild(div);
+  });
+  abrirModal('modal-modos');
+}
+
+window.adicionarModo = async function() {
+  const input = document.getElementById('modal-modos-input');
+  const valor = input.value.trim();
+  if (!valor) return;
+  const key = gerarId();
+  if (!estado.modos) estado.modos = {};
+  estado.modos[key] = valor;
+  await salvar(`modos/${key}`, valor);
+  input.value = '';
+  abrirModalModos();
+  renderizarModos();
+};
+
+window.removerModo = async function(key) {
+  delete estado.modos[key];
+  if (estado.modoAtual === key) { estado.modoAtual = ''; await salvar('modoAtual', ''); }
+  await salvar(`modos/${key}`, null);
+  abrirModalModos();
+  renderizarModos();
+};
+
+// ============================================================
+// ÂNCORA DO DIA
+// ============================================================
+function renderizarAncora() {
+  const hoje = dataHoje();
+  const container = document.getElementById('ancora-container');
+  const ancoraId = estado.ancoras && estado.ancoras[hoje];
+  const tarefa = ancoraId && estado.tarefasHoje ? estado.tarefasHoje[ancoraId] : null;
+
+  if (tarefa) {
+    container.innerHTML = `
+      <div class="ancora-card">
+        <div class="ancora-label">⭐ Âncora do dia — o mais importante</div>
+        <div class="ancora-conteudo">
+          <div class="ancora-check ${tarefa.concluida ? 'concluida' : ''}" onclick="toggleTarefa('${tarefa.id}')"></div>
+          <div class="ancora-texto ${tarefa.concluida ? 'concluida' : ''}">${tarefa.texto}</div>
+        </div>
+        <button class="btn-trocar-ancora" onclick="abrirModalAncora()">trocar âncora</button>
+      </div>`;
+  } else {
+    container.innerHTML = `
+      <div class="ancora-card">
+        <div class="ancora-label">⭐ Âncora do dia</div>
+        <div class="ancora-vazia">
+          <div class="ancora-vazia-texto">Qual é a tarefa mais importante de hoje? Eleja uma. Se concluir só ela, o dia já valeu.</div>
+          <button class="btn-eleger" onclick="abrirModalAncora()">Eleger âncora</button>
+        </div>
+      </div>`;
+  }
+}
+
+window.abrirModalAncora = function() {
+  const hoje = dataHoje();
+  const lista = document.getElementById('modal-ancora-lista');
+  lista.innerHTML = '';
+  const tarefasHoje = Object.values(estado.tarefasHoje || {}).filter(t => t && t.data === hoje && !t.concluida);
+
+  if (tarefasHoje.length === 0) {
+    lista.innerHTML = '<p style="font-size:14px;color:var(--text-muted);padding:1rem 0;text-align:center">Você ainda não tem tarefas hoje. Adicione tarefas primeiro, depois eleja a âncora.</p>';
+  } else {
+    ordenarPorUrgencia(tarefasHoje).forEach(t => {
+      const proj = t.projetoId && estado.projetos[t.projetoId];
+      const div = document.createElement('div');
+      div.className = 'tarefa-item';
+      div.style.cursor = 'pointer';
+      div.onclick = () => elegerAncora(t.id);
+      div.innerHTML = `
+        <div class="urgencia-dot urgencia-${t.urgencia || 'medio'}"></div>
+        <div class="tarefa-corpo"><span class="tarefa-texto">${t.texto}</span>
+        ${proj ? `<div class="tarefa-meta"><span style="font-size:11px;color:var(--text-muted)">${proj.emoji} ${proj.nome}</span></div>` : ''}</div>`;
+      lista.appendChild(div);
+    });
+  }
+  abrirModal('modal-ancora');
+};
+
+async function elegerAncora(tarefaId) {
+  const hoje = dataHoje();
+  if (!estado.ancoras) estado.ancoras = {};
+  estado.ancoras[hoje] = tarefaId;
+  fecharModal('modal-ancora');
+  renderizarAncora();
+  registrarAtividade();
+  await salvar(`ancoras/${hoje}`, tarefaId);
+  mostrarNotificacao('Âncora do dia definida ⭐');
+}
+
+// ============================================================
+// COMPROMISSOS / AGENDA
+// ============================================================
+function renderizarCompromissosHoje() {
+  const hoje = dataHoje();
+  const card = document.getElementById('compromissos-hoje-card');
+  const lista = document.getElementById('compromissos-hoje-lista');
+  const compromissosHoje = Object.values(estado.agenda || {}).filter(c => c && c.data === hoje);
+
+  if (compromissosHoje.length === 0) {
+    card.style.display = 'none';
+    return;
+  }
+  card.style.display = 'block';
+  lista.innerHTML = '';
+  compromissosHoje.sort((a,b) => (a.hora||'99') < (b.hora||'99') ? -1 : 1).forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'compromisso-item';
+    div.innerHTML = `
+      <div class="compromisso-hora">${c.hora || '—'}</div>
+      <div class="compromisso-texto">${c.texto}</div>
+      <button class="tarefa-delete" style="opacity:0.5" onclick="deletarCompromisso('${c.id}')">×</button>`;
+    lista.appendChild(div);
+  });
+}
+
+function renderizarAgenda() {
+  const lista = document.getElementById('lista-compromissos');
+  lista.innerHTML = '';
+  const hoje = dataHoje();
+  const compromissos = Object.values(estado.agenda || {})
+    .filter(c => c && c.data >= hoje)
+    .sort((a,b) => {
+      if (a.data !== b.data) return a.data < b.data ? -1 : 1;
+      return (a.hora||'99') < (b.hora||'99') ? -1 : 1;
+    });
+
+  if (compromissos.length === 0) {
+    lista.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-texto">Nenhum compromisso futuro. Marque o próximo.</div></div>';
+    return;
+  }
+
+  // Agrupar por data
+  const grupos = {};
+  compromissos.forEach(c => { if (!grupos[c.data]) grupos[c.data] = []; grupos[c.data].push(c); });
+
+  Object.entries(grupos).forEach(([data, items]) => {
+    const grupo = document.createElement('div');
+    grupo.className = 'agenda-dia-grupo';
+    const ehHoje = data === hoje;
+    grupo.innerHTML = `<div class="agenda-dia-titulo ${ehHoje ? 'agenda-hoje-destaque' : ''}">${ehHoje ? 'HOJE · ' : ''}${formatarDataCompleta(data)}</div>`;
+    items.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'compromisso-item';
+      div.innerHTML = `
+        <div class="compromisso-hora">${c.hora || '—'}</div>
+        <div class="compromisso-texto">${c.texto}</div>
+        <button class="tarefa-delete" style="opacity:0.5" onclick="deletarCompromisso('${c.id}')">×</button>`;
+      grupo.appendChild(div);
+    });
+    lista.appendChild(grupo);
+  });
+}
+
+function formatarDataCompleta(iso) {
+  const [ano, mes, dia] = iso.split('-');
+  const dt = new Date(parseInt(ano), parseInt(mes)-1, parseInt(dia));
+  const dias = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+  const meses = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  return `${dias[dt.getDay()]}, ${dia} ${meses[parseInt(mes)-1]}`;
+}
+
+window.confirmarCompromisso = async function() {
+  const texto = document.getElementById('modal-compromisso-texto').value.trim();
+  const data = document.getElementById('modal-compromisso-data').value;
+  const hora = document.getElementById('modal-compromisso-hora').value;
+  if (!texto || !data) { mostrarNotificacao('Preencha o compromisso e a data'); return; }
+  const id = gerarId();
+  const c = { id, texto, data, hora: hora || '' };
+  if (!estado.agenda) estado.agenda = {};
+  estado.agenda[id] = c;
+  fecharModal('modal-compromisso');
+  renderizarAgenda();
+  registrarAtividade();
+  await salvar(`agenda/${id}`, c);
+  mostrarNotificacao('Compromisso marcado ✓');
+};
+
+window.deletarCompromisso = async function(id) {
+  delete estado.agenda[id];
+  renderizarAgenda();
+  renderizarCompromissosHoje();
+  await salvar(`agenda/${id}`, null);
+  mostrarNotificacao('Compromisso removido');
+};
+
+// ============================================================
+// CONSISTÊNCIA AUTOMÁTICA
+// ============================================================
+// Registra que houve atividade no dia (amarelo no mínimo)
+async function registrarAtividade() {
+  const hoje = dataHoje();
+  if (!estado.consistencia) estado.consistencia = {};
+  // Só sobe para amarelo se ainda não estiver verde
+  if (estado.consistencia[hoje] !== 'feito') {
+    estado.consistencia[hoje] = 'parcial';
+    await salvar(`consistencia/${hoje}`, 'parcial');
+  }
+}
+
+// Recalcula: verde se âncora concluída, senão amarelo se teve atividade
+async function atualizarConsistenciaAuto() {
+  const hoje = dataHoje();
+  if (!estado.consistencia) estado.consistencia = {};
+  const ancoraId = estado.ancoras && estado.ancoras[hoje];
+  const ancoraConcluida = ancoraId && estado.tarefasHoje[ancoraId] && estado.tarefasHoje[ancoraId].concluida;
+  const novoStatus = ancoraConcluida ? 'feito' : 'parcial';
+  estado.consistencia[hoje] = novoStatus;
+  await salvar(`consistencia/${hoje}`, novoStatus);
+  if (novoStatus === 'feito') mostrarNotificacao('Âncora concluída! Dia verde 🟩');
 }
 
 // ============================================================
@@ -769,6 +1223,7 @@ async function toggleRotina(item) {
   const novoValor = !estado.rotinaHoje[hoje][item];
   estado.rotinaHoje[hoje][item] = novoValor;
   renderizarRotina();
+  registrarAtividade();
   await salvar(`rotinaHoje/${hoje}/${item}`, novoValor);
 }
 
@@ -866,7 +1321,7 @@ function abrirProjetoDetalhe(projetoId) {
     });
   }
 
-  ['hoje','projetos','estacionamento','checkin','consistencia'].forEach(p => {
+  ['hoje','projetos','estacionamento','agenda','consistencia'].forEach(p => {
     const el = document.getElementById('pagina-' + p);
     if (el) el.style.display = 'none';
   });
@@ -937,45 +1392,7 @@ window.deletarAprender = async function(id) {
 };
 
 // ============================================================
-// CHECK-IN
-// ============================================================
-function renderizarCheckin() {
-  const checkins = Object.values(estado.checkins || {}).sort((a,b) => b.data > a.data ? 1 : -1);
-  const historico = document.getElementById('historico-checkins');
-  const lista = document.getElementById('lista-checkins');
-  lista.innerHTML = '';
-  if (checkins.length === 0) { historico.style.display = 'none'; return; }
-  historico.style.display = 'block';
-  checkins.slice(0,7).forEach(c => {
-    const div = document.createElement('div');
-    div.style.cssText = 'padding:0.75rem 0;border-bottom:1px solid var(--border)';
-    div.innerHTML = `
-      <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:0.5rem">${formatarData(c.data)}</div>
-      ${c.fiz ? `<p style="font-size:13px;color:var(--text-secondary);margin-bottom:0.25rem"><strong style="color:var(--text-primary)">Fiz:</strong> ${c.fiz}</p>` : ''}
-      ${c.proximo ? `<p style="font-size:13px;color:var(--text-secondary)"><strong style="color:var(--text-primary)">Próximo:</strong> ${c.proximo}</p>` : ''}`;
-    lista.appendChild(div);
-  });
-}
-
-window.salvarCheckin = async function() {
-  const hoje = dataHoje();
-  const checkin = {
-    data: hoje,
-    fiz: document.getElementById('checkin-fiz').value.trim(),
-    distrai: document.getElementById('checkin-distrai').value.trim(),
-    funcionou: document.getElementById('checkin-funcionou').value.trim(),
-    proximo: document.getElementById('checkin-proximo').value.trim()
-  };
-  if (!estado.checkins) estado.checkins = {};
-  estado.checkins[hoje] = checkin;
-  ['checkin-fiz','checkin-distrai','checkin-funcionou','checkin-proximo'].forEach(id => document.getElementById(id).value = '');
-  renderizarCheckin();
-  await salvar(`checkins/${hoje}`, checkin);
-  mostrarNotificacao('Reflexão do dia salva ✓');
-};
-
-// ============================================================
-// CONSISTÊNCIA
+// CONSISTÊNCIA AUTOMÁTICA — render
 // ============================================================
 function renderizarConsistencia() {
   const hoje = new Date();
@@ -1008,33 +1425,53 @@ function renderizarConsistencia() {
     const status = estado.consistencia && estado.consistencia[dataStr];
     const div = document.createElement('div');
     let cls = 'dia-celula ';
-    if (d > diaHoje) cls += 'futuro';
-    else if (status === 'feito') cls += 'feito';
-    else if (status === 'parcial') cls += 'parcial';
-    else if (status === 'nao-feito') cls += 'nao-feito';
-    else cls += 'vazio';
+    if (d > diaHoje) {
+      cls += 'futuro';
+    } else if (status === 'feito') {
+      cls += 'feito';
+    } else if (status === 'parcial') {
+      cls += 'parcial';
+    } else {
+      // Dia passado ou hoje sem nenhum registro = vermelho (incentiva o uso)
+      cls += 'nao-feito';
+    }
     if (d === diaHoje) cls += ' hoje';
     div.className = cls;
     div.textContent = d;
     grid.appendChild(div);
   }
+
+  // Streak de dias verdes consecutivos terminando hoje/ontem
+  const streak = calcularStreak();
+  const badge = document.getElementById('streak-badge');
+  badge.textContent = streak > 0 ? `🔥 ${streak} dia${streak>1?'s':''} concluindo a âncora` : '';
 }
 
-window.marcarDia = async function(status) {
-  const hoje = dataHoje();
-  if (!estado.consistencia) estado.consistencia = {};
-  estado.consistencia[hoje] = status;
-  renderizarConsistencia();
-  await salvar(`consistencia/${hoje}`, status);
-  mostrarNotificacao('Dia marcado ✓');
-};
+function calcularStreak() {
+  let streak = 0;
+  const d = new Date();
+  // permite que hoje ainda não esteja verde sem quebrar o streak
+  for (let i = 0; i < 365; i++) {
+    const dataStr = d.toISOString().split('T')[0];
+    const status = estado.consistencia && estado.consistencia[dataStr];
+    if (status === 'feito') {
+      streak++;
+    } else if (i === 0) {
+      // hoje ainda não fechou a âncora — não conta, mas não quebra
+    } else {
+      break;
+    }
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
 
 // ============================================================
 // MODAIS
 // ============================================================
 window.abrirModal = function(id) {
   document.getElementById(id).classList.add('aberto');
-  const input = document.querySelector(`#${id} input`);
+  const input = document.querySelector(`#${id} input[type=text], #${id} input:not([type])`);
   if (input) setTimeout(() => input.focus(), 50);
 };
 window.fecharModal = function(id) {
@@ -1042,16 +1479,35 @@ window.fecharModal = function(id) {
   document.querySelectorAll(`#${id} input, #${id} textarea`).forEach(i => i.value = '');
 };
 
+// Urgência selecionada por modal
+const urgenciaSelecionada = { 'modal-tarefa': 'medio', 'modal-tarefa-projeto': 'medio' };
+window.selecionarUrgencia = function(modalId, urg) {
+  urgenciaSelecionada[modalId] = urg;
+  const seletor = document.getElementById(modalId + '-urgencia');
+  seletor.querySelectorAll('.urgencia-opcao').forEach(op => {
+    op.className = 'urgencia-opcao';
+    if (op.dataset.urg === urg) op.classList.add('selecionada', 'sel-' + urg);
+  });
+};
+
+window.abrirModalTarefaHoje = function() {
+  urgenciaSelecionada['modal-tarefa'] = 'medio';
+  selecionarUrgencia('modal-tarefa', 'medio');
+  abrirModal('modal-tarefa');
+};
+
 window.confirmarTarefa = async function() {
   const texto = document.getElementById('modal-tarefa-input').value.trim();
   if (!texto) return;
   const projetoId = document.getElementById('modal-tarefa-projeto').value || null;
+  const horario = document.getElementById('modal-tarefa-horario').value || '';
   const id = gerarId();
-  const tarefa = { id, texto, projetoId, data: dataHoje(), concluida: false };
+  const tarefa = { id, texto, projetoId, data: dataHoje(), concluida: false, urgencia: urgenciaSelecionada['modal-tarefa'] || 'medio', horario };
   if (!estado.tarefasHoje) estado.tarefasHoje = {};
   estado.tarefasHoje[id] = tarefa;
   fecharModal('modal-tarefa');
   renderizarHoje();
+  registrarAtividade();
   await salvar(`tarefasHoje/${id}`, tarefa);
   mostrarNotificacao('Tarefa adicionada ✓');
 };
@@ -1101,17 +1557,23 @@ window.confirmarProjeto = async function() {
   mostrarNotificacao('Projeto criado ✓');
 };
 
-window.abrirModalTarefaProjeto = function() { abrirModal('modal-tarefa-projeto'); };
+window.abrirModalTarefaProjeto = function() {
+  urgenciaSelecionada['modal-tarefa-projeto'] = 'medio';
+  selecionarUrgencia('modal-tarefa-projeto', 'medio');
+  abrirModal('modal-tarefa-projeto');
+};
 
 window.confirmarTarefaProjeto = async function() {
   const texto = document.getElementById('modal-tarefa-projeto-input').value.trim();
   if (!texto || !projetoDetalheAtual) return;
+  const horario = document.getElementById('modal-tarefa-projeto-horario').value || '';
   const id = gerarId();
-  const tarefa = { id, texto, projetoId: projetoDetalheAtual, data: dataHoje(), concluida: false };
+  const tarefa = { id, texto, projetoId: projetoDetalheAtual, data: dataHoje(), concluida: false, urgencia: urgenciaSelecionada['modal-tarefa-projeto'] || 'medio', horario };
   if (!estado.tarefasHoje) estado.tarefasHoje = {};
   estado.tarefasHoje[id] = tarefa;
   fecharModal('modal-tarefa-projeto');
   abrirProjetoDetalhe(projetoDetalheAtual);
+  registrarAtividade();
   await salvar(`tarefasHoje/${id}`, tarefa);
   mostrarNotificacao('Tarefa adicionada ✓');
 };
