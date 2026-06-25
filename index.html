@@ -294,14 +294,26 @@
   .cal-nav-btn:hover { background: var(--cinza-50); border-color: var(--border-hover); }
   .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
   .cal-dia-header { font-size: 11px; text-align: center; color: var(--text-muted); font-weight: 600; padding: 0.3rem 0; }
-  .cal-dia { aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-primary); transition: all 0.12s; position: relative; }
+  .cal-dia { min-height: 58px; border-radius: 6px; display: flex; flex-direction: column; align-items: stretch; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-primary); transition: all 0.12s; position: relative; padding: 3px; overflow: hidden; }
   .cal-dia:hover { background: var(--cinza-50); }
+  .cal-dia-num { text-align: center; font-size: 12px; flex-shrink: 0; }
   .cal-dia.hoje { background: var(--accent); color: white; font-weight: 700; }
   .cal-dia.hoje:hover { background: var(--azul-800); }
-  .cal-dia.tem-evento::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-verde); position: absolute; bottom: 3px; }
-  .cal-dia.hoje.tem-evento::after { background: white; }
-  .cal-dia.outro-mes { color: var(--text-muted); }
+  .cal-dia.outro-mes { color: var(--text-muted); opacity: 0.5; }
   .cal-dia.selecionado { box-shadow: 0 0 0 2px var(--accent); }
+  .cal-eventos { display: flex; flex-direction: column; gap: 2px; margin-top: 2px; overflow: hidden; }
+  .cal-evento-chip { font-size: 8.5px; line-height: 1.3; padding: 1px 3px; border-radius: 3px; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: var(--accent-verde); }
+  .cal-dia.hoje .cal-evento-chip { background: rgba(255,255,255,0.25); }
+  .cal-evento-intervalo { background: #8B5CF6; }
+  .cal-mais { font-size: 8px; color: var(--text-muted); text-align: center; }
+  .cal-dia.hoje .cal-mais { color: rgba(255,255,255,0.8); }
+
+  /* DRAG ROTINA */
+  .rotina-edit-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.6rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg-card); margin-bottom: 0.4rem; cursor: grab; transition: box-shadow 0.12s, opacity 0.12s; }
+  .rotina-edit-item.arrastando { opacity: 0.4; box-shadow: var(--shadow-md); }
+  .rotina-edit-item.drag-over { border-color: var(--accent); border-style: dashed; }
+  .rotina-drag-handle { color: var(--text-muted); font-size: 16px; cursor: grab; flex-shrink: 0; line-height: 1; }
+  .rotina-edit-texto { flex: 1; font-size: 14px; }
 
   /* RESUMO DO DIA */
   .resumo-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
@@ -475,7 +487,7 @@
     <div class="card">
       <div class="card-titulo">
         <span id="agenda-dia-selecionado-titulo">Compromissos</span>
-        <button class="btn-mini" onclick="abrirModal('modal-compromisso')">+ novo</button>
+        <button class="btn-mini" onclick="abrirNovoCompromisso()">+ novo</button>
       </div>
       <div id="lista-compromissos"></div>
     </div>
@@ -676,8 +688,12 @@
     <input type="text" class="input-full" id="modal-compromisso-texto" placeholder="Ex: Reunião na Câmara">
     <span class="modal-label">Data de início</span>
     <input type="date" class="input-full" id="modal-compromisso-data">
+    <span class="modal-label">Data de fim (opcional — para intervalos como viagens)</span>
+    <input type="date" class="input-full" id="modal-compromisso-data-fim">
     <span class="modal-label">Horário (opcional)</span>
     <input type="time" class="input-full" id="modal-compromisso-hora">
+    <span class="modal-label">Projeto (define a cor no calendário)</span>
+    <select class="select-projeto" id="modal-compromisso-projeto"><option value="">Sem projeto</option></select>
     <span class="modal-label">Recorrência</span>
     <select class="select-projeto" id="modal-compromisso-recorrencia">
       <option value="unico">Apenas este dia</option>
@@ -798,6 +814,7 @@ const ESTADO_PADRAO = {
   },
   tarefasHoje: {},
   rotina: { 0: 'Levantar', 1: 'Café da manhã', 2: 'Trabalho Profundo', 3: 'Academia', 4: 'Caminhada', 5: 'Leitura', 6: 'Revisão do dia' },
+  rotinaOrdem: ['0','1','2','3','4','5','6'],
   rotinaHoje: {},
   ideias: {},
   aprenderDepois: {},
@@ -888,6 +905,11 @@ async function inicializar() {
       if (!estado.manutencao) estado.manutencao = {};
       if (!estado.rastreamento) estado.rastreamento = {};
       if (!estado.rastrSessaoAtual) estado.rastrSessaoAtual = null;
+      // V3.1 — ordem do checklist
+      if (!estado.rotinaOrdem) {
+        estado.rotinaOrdem = Object.keys(estado.rotina || {});
+        await set(ref(db, 'rotinaOrdem'), estado.rotinaOrdem);
+      }
       migrarPendencias();
     } else {
       // Primeiro acesso — salva estado padrão
@@ -1432,6 +1454,10 @@ window.navMes = function(dir) {
 };
 
 function verificarRecorrencia(comp, dataStr) {
+  // Intervalo (dataFim): cobre todos os dias entre data e dataFim
+  if (comp.dataFim && comp.dataFim >= comp.data) {
+    if (dataStr >= comp.data && dataStr <= comp.dataFim) return true;
+  }
   if (!comp.recorrencia || comp.recorrencia === 'unico') return false;
   const dt = new Date(dataStr + 'T12:00:00');
   const inicio = new Date((comp.data||dataStr) + 'T12:00:00');
@@ -1439,6 +1465,22 @@ function verificarRecorrencia(comp, dataStr) {
   if (comp.recorrencia === 'semanal') return dt.getDay() === inicio.getDay();
   if (comp.recorrencia === 'mensal') return dt.getDate() === inicio.getDate();
   return false;
+}
+
+// Retorna compromissos que aparecem num dia (único, intervalo ou recorrente)
+function eventosDoDia(dataStr) {
+  return Object.values(estado.agenda || {}).filter(c =>
+    c && (c.data === dataStr || verificarRecorrencia(c, dataStr))
+  );
+}
+
+// Cor do compromisso conforme projeto
+const CORES_PROJETO = ['#1A7A52', '#0066CC', '#8B5CF6', '#E07B39', '#D4357C', '#0E9AA7'];
+function corDoCompromisso(comp) {
+  if (!comp.projetoId || !estado.projetos) return '#1A7A52';
+  const ids = Object.keys(estado.projetos);
+  const idx = ids.indexOf(comp.projetoId);
+  return idx >= 0 ? CORES_PROJETO[idx % CORES_PROJETO.length] : '#1A7A52';
 }
 
 function renderizarCalendario() {
@@ -1462,19 +1504,31 @@ function renderizarCalendario() {
   for (let i = primeiroDia - 1; i >= 0; i--) {
     const div = document.createElement('div');
     div.className = 'cal-dia outro-mes';
-    div.textContent = diasMesAnterior - i;
+    div.innerHTML = `<div class="cal-dia-num">${diasMesAnterior - i}</div>`;
     grid.appendChild(div);
   }
   for (let d = 1; d <= totalDias; d++) {
     const dataStr = `${calAnoAtual}-${String(calMesAtual+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const temEvento = Object.values(estado.agenda||{}).some(c => c && (c.data === dataStr || verificarRecorrencia(c, dataStr)));
+    const eventos = eventosDoDia(dataStr);
     const div = document.createElement('div');
     let cls = 'cal-dia';
     if (dataStr === hojeStr) cls += ' hoje';
     if (dataStr === calDiaSelecionado) cls += ' selecionado';
-    if (temEvento) cls += ' tem-evento';
     div.className = cls;
-    div.textContent = d;
+
+    let html = `<div class="cal-dia-num">${d}</div>`;
+    if (eventos.length > 0) {
+      html += '<div class="cal-eventos">';
+      eventos.slice(0, 2).forEach(ev => {
+        const ehIntervalo = ev.dataFim && ev.dataFim >= ev.data;
+        const txt = ev.texto.length > 18 ? ev.texto.slice(0, 18) + '…' : ev.texto;
+        const cor = corDoCompromisso(ev);
+        html += `<div class="cal-evento-chip${ehIntervalo ? ' cal-evento-intervalo' : ''}" style="background:${cor}">${txt}</div>`;
+      });
+      if (eventos.length > 2) html += `<div class="cal-mais">+${eventos.length - 2}</div>`;
+      html += '</div>';
+    }
+    div.innerHTML = html;
     div.onclick = () => { calDiaSelecionado = dataStr; renderizarCalendario(); renderizarAgendaDia(); };
     grid.appendChild(div);
   }
@@ -1744,11 +1798,14 @@ function formatarDataCompleta(iso) {
 window.confirmarCompromisso = async function() {
   const texto = document.getElementById('modal-compromisso-texto').value.trim();
   const data = document.getElementById('modal-compromisso-data').value;
+  const dataFim = document.getElementById('modal-compromisso-data-fim').value;
   const hora = document.getElementById('modal-compromisso-hora').value;
+  const projetoId = document.getElementById('modal-compromisso-projeto').value || null;
   const recorrencia = document.getElementById('modal-compromisso-recorrencia').value || 'unico';
   if (!texto || !data) { mostrarNotificacao('Preencha o compromisso e a data'); return; }
+  if (dataFim && dataFim < data) { mostrarNotificacao('A data de fim não pode ser antes do início'); return; }
   const id = gerarId();
-  const c = { id, texto, data, hora: hora || '', recorrencia };
+  const c = { id, texto, data, dataFim: dataFim || '', hora: hora || '', projetoId, recorrencia };
   if (!estado.agenda) estado.agenda = {};
   estado.agenda[id] = c;
   fecharModal('modal-compromisso');
@@ -1757,6 +1814,23 @@ window.confirmarCompromisso = async function() {
   registrarAtividade();
   await salvar(`agenda/${id}`, c);
   mostrarNotificacao('Compromisso marcado ✓');
+};
+
+window.abrirNovoCompromisso = function() {
+  // Preenche a data com o dia selecionado no calendário
+  const dataInput = document.getElementById('modal-compromisso-data');
+  if (dataInput) dataInput.value = calDiaSelecionado || dataHoje();
+  // Popula projetos
+  const sel = document.getElementById('modal-compromisso-projeto');
+  if (sel) {
+    sel.innerHTML = '<option value="">Sem projeto</option>';
+    projetosOrdenados().forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id; opt.textContent = `${p.emoji} ${p.nome}`;
+      sel.appendChild(opt);
+    });
+  }
+  abrirModal('modal-compromisso');
 };
 
 window.deletarCompromisso = async function(id) {
@@ -1796,13 +1870,20 @@ async function atualizarConsistenciaAuto() {
 // ============================================================
 // ROTINA
 // ============================================================
+function ordemRotina() {
+  // Retorna chaves na ordem definida, incluindo qualquer chave nova não listada
+  const ordem = (estado.rotinaOrdem || []).filter(k => estado.rotina && estado.rotina[k] !== undefined);
+  Object.keys(estado.rotina || {}).forEach(k => { if (!ordem.includes(k)) ordem.push(k); });
+  return ordem;
+}
+
 function renderizarRotina() {
   const hoje = dataHoje();
   const rotinaHoje = (estado.rotinaHoje && estado.rotinaHoje[hoje]) || {};
   const grid = document.getElementById('rotina-grid');
   grid.innerHTML = '';
-  const itens = Object.values(estado.rotina || {});
-  itens.forEach(item => {
+  ordemRotina().forEach(key => {
+    const item = estado.rotina[key];
     const div = document.createElement('div');
     const feito = rotinaHoje[item] === true;
     div.className = 'rotina-item' + (feito ? ' feito' : '');
@@ -1823,22 +1904,73 @@ async function toggleRotina(item) {
   await salvar(`rotinaHoje/${hoje}/${item}`, novoValor);
 }
 
+let dragRotinaKey = null;
+
 window.abrirModalRotina = function() {
   const lista = document.getElementById('modal-rotina-lista');
   lista.innerHTML = '';
-  const itens = Object.entries(estado.rotina || {});
-  itens.forEach(([key, item]) => {
+  ordemRotina().forEach(key => {
+    const item = estado.rotina[key];
     const div = document.createElement('div');
-    div.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:0.4rem 0;border-bottom:1px solid var(--border)';
-    div.innerHTML = `<span style="font-size:14px">${item}</span><button class="btn-mini danger" onclick="removerItemRotina('${key}')">remover</button>`;
+    div.className = 'rotina-edit-item';
+    div.draggable = true;
+    div.dataset.key = key;
+    div.innerHTML = `
+      <span class="rotina-drag-handle">⠿</span>
+      <span class="rotina-edit-texto">${item}</span>
+      <button class="btn-mini danger" onclick="removerItemRotina('${key}')">remover</button>`;
+
+    // Desktop drag
+    div.addEventListener('dragstart', e => { dragRotinaKey = key; div.classList.add('arrastando'); });
+    div.addEventListener('dragend', () => { div.classList.remove('arrastando'); document.querySelectorAll('.rotina-edit-item').forEach(el => el.classList.remove('drag-over')); });
+    div.addEventListener('dragover', e => { e.preventDefault(); div.classList.add('drag-over'); });
+    div.addEventListener('dragleave', () => div.classList.remove('drag-over'));
+    div.addEventListener('drop', e => { e.preventDefault(); div.classList.remove('drag-over'); reordenarRotina(dragRotinaKey, key); });
+
+    // Touch drag (mobile)
+    const handle = div.querySelector('.rotina-drag-handle');
+    handle.addEventListener('touchstart', e => { dragRotinaKey = key; div.classList.add('arrastando'); }, {passive:true});
+    handle.addEventListener('touchmove', e => {
+      e.preventDefault();
+      const t = e.touches[0];
+      const alvo = document.elementFromPoint(t.clientX, t.clientY);
+      const itemAlvo = alvo && alvo.closest('.rotina-edit-item');
+      document.querySelectorAll('.rotina-edit-item').forEach(el => el.classList.remove('drag-over'));
+      if (itemAlvo && itemAlvo.dataset.key !== dragRotinaKey) itemAlvo.classList.add('drag-over');
+    }, {passive:false});
+    handle.addEventListener('touchend', e => {
+      const t = e.changedTouches[0];
+      const alvo = document.elementFromPoint(t.clientX, t.clientY);
+      const itemAlvo = alvo && alvo.closest('.rotina-edit-item');
+      div.classList.remove('arrastando');
+      document.querySelectorAll('.rotina-edit-item').forEach(el => el.classList.remove('drag-over'));
+      if (itemAlvo && itemAlvo.dataset.key) reordenarRotina(dragRotinaKey, itemAlvo.dataset.key);
+    });
+
     lista.appendChild(div);
   });
   abrirModal('modal-rotina');
 };
 
+async function reordenarRotina(origem, destino) {
+  if (!origem || origem === destino) return;
+  const ordem = ordemRotina();
+  const idxO = ordem.indexOf(origem);
+  const idxD = ordem.indexOf(destino);
+  if (idxO < 0 || idxD < 0) return;
+  ordem.splice(idxO, 1);
+  ordem.splice(idxD, 0, origem);
+  estado.rotinaOrdem = ordem;
+  await salvar('rotinaOrdem', ordem);
+  window.abrirModalRotina();
+  renderizarRotina();
+}
+
 window.removerItemRotina = async function(key) {
   delete estado.rotina[key];
+  estado.rotinaOrdem = (estado.rotinaOrdem || []).filter(k => k !== key);
   await salvar(`rotina/${key}`, null);
+  await salvar('rotinaOrdem', estado.rotinaOrdem);
   window.abrirModalRotina();
   renderizarRotina();
 };
@@ -1850,7 +1982,10 @@ window.adicionarItemRotina = async function() {
   const key = gerarId();
   if (!estado.rotina) estado.rotina = {};
   estado.rotina[key] = valor;
+  if (!estado.rotinaOrdem) estado.rotinaOrdem = [];
+  estado.rotinaOrdem.push(key);
   await salvar(`rotina/${key}`, valor);
+  await salvar('rotinaOrdem', estado.rotinaOrdem);
   input.value = '';
   window.abrirModalRotina();
   renderizarRotina();
