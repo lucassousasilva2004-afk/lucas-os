@@ -244,6 +244,71 @@
   .consistencia-info { font-size: 13px; color: var(--text-secondary); background: var(--cinza-50); padding: 0.75rem 1rem; border-radius: var(--radius-md); margin-bottom: 1rem; line-height: 1.5; }
   .streak-badge { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 14px; font-weight: 600; color: var(--accent-verde); margin-top: 0.75rem; }
 
+  /* ===== V3 ===== */
+
+  /* RASTREAMENTO — barra de modo ativo com timer */
+  .modo-ativo-bar { background: var(--cinza-900); color: white; border-radius: var(--radius-md); padding: 0.6rem 1rem; margin-bottom: 0.75rem; display: none; align-items: center; gap: 0.75rem; }
+  .modo-ativo-bar.visivel { display: flex; }
+  .modo-ativo-nome { font-size: 14px; font-weight: 600; flex: 1; }
+  .modo-ativo-timer { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; color: #90EE90; }
+  .modo-ativo-pausado { color: #FAC775; }
+  .btn-modo-pausar { padding: 0.3rem 0.7rem; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); background: none; color: white; font-size: 12px; cursor: pointer; transition: background 0.12s; }
+  .btn-modo-pausar:hover { background: rgba(255,255,255,0.15); }
+
+  /* POPUP RASTREAMENTO */
+  .popup-rastreamento { position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%); background: var(--cinza-900); color: white; border-radius: var(--radius-lg); padding: 1rem 1.5rem; z-index: 300; box-shadow: var(--shadow-md); min-width: 280px; display: none; }
+  .popup-rastreamento.visivel { display: block; }
+  .popup-rastr-titulo { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 0.4rem; }
+  .popup-rastr-tempo { font-size: 22px; font-weight: 700; color: #90EE90; margin-bottom: 0.75rem; }
+  .popup-rastr-acoes { display: flex; gap: 0.5rem; }
+  .btn-popup { flex: 1; padding: 0.5rem; border-radius: var(--radius-sm); border: none; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .btn-popup-ok { background: var(--accent); color: white; }
+  .btn-popup-ok:hover { background: var(--azul-800); }
+
+  /* TAREFA COM ATRASO */
+  .tarefa-atraso-badge { font-size: 10px; padding: 0.1rem 0.45rem; border-radius: 4px; background: #FCEBEB; color: #C0392B; font-weight: 600; margin-left: 0.4rem; }
+
+  /* EDIÇÃO INLINE DE TAREFA */
+  .tarefa-edit-btn { width: 20px; height: 20px; border: none; background: none; cursor: pointer; color: var(--text-muted); opacity: 0; font-size: 13px; border-radius: 3px; display: flex; align-items: center; justify-content: center; transition: opacity 0.12s; flex-shrink: 0; }
+  .tarefa-item:hover .tarefa-edit-btn { opacity: 1; }
+  .tarefa-edit-btn:hover { background: var(--cinza-50); color: var(--accent); }
+
+  /* BLOCOS DE MANUTENÇÃO */
+  .manutencao-item { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.5rem; border-radius: var(--radius-sm); transition: background 0.12s; }
+  .manutencao-item:hover { background: var(--cinza-50); }
+  .manutencao-freq { font-size: 10px; padding: 0.1rem 0.4rem; border-radius: 3px; background: var(--accent-soft); color: var(--accent); font-weight: 600; margin-left: 0.3rem; }
+
+  /* LIXEIRA */
+  .lixeira-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border); }
+  .lixeira-item:last-child { border-bottom: none; }
+  .lixeira-info { flex: 1; }
+  .lixeira-titulo { font-size: 14px; color: var(--text-secondary); text-decoration: line-through; }
+  .lixeira-meta { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .btn-restaurar { padding: 0.25rem 0.65rem; border-radius: 4px; border: 1px solid var(--accent); background: none; color: var(--accent); font-size: 12px; cursor: pointer; transition: all 0.12s; }
+  .btn-restaurar:hover { background: var(--accent-soft); }
+
+  /* CALENDÁRIO */
+  .cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+  .cal-mes-titulo { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+  .cal-nav-btn { width: 30px; height: 30px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: none; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.12s; }
+  .cal-nav-btn:hover { background: var(--cinza-50); border-color: var(--border-hover); }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .cal-dia-header { font-size: 11px; text-align: center; color: var(--text-muted); font-weight: 600; padding: 0.3rem 0; }
+  .cal-dia { aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-primary); transition: all 0.12s; position: relative; }
+  .cal-dia:hover { background: var(--cinza-50); }
+  .cal-dia.hoje { background: var(--accent); color: white; font-weight: 700; }
+  .cal-dia.hoje:hover { background: var(--azul-800); }
+  .cal-dia.tem-evento::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--accent-verde); position: absolute; bottom: 3px; }
+  .cal-dia.hoje.tem-evento::after { background: white; }
+  .cal-dia.outro-mes { color: var(--text-muted); }
+  .cal-dia.selecionado { box-shadow: 0 0 0 2px var(--accent); }
+
+  /* RESUMO DO DIA */
+  .resumo-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+  .resumo-item:last-child { border-bottom: none; }
+  .resumo-modo { font-size: 14px; color: var(--text-primary); }
+  .resumo-tempo { font-size: 14px; font-weight: 600; color: var(--accent); }
+
   @media (max-width: 700px) {
     .sidebar { position: fixed; bottom: 0; top: auto; left: 0; right: 0; width: 100%; height: auto; min-height: 0; flex-direction: row; border-right: none; border-top: 1px solid var(--border); padding: 0.4rem 0.5rem; z-index: 50; justify-content: space-around; }
     .sidebar-logo, .sidebar-missao, .sidebar-footer { display: none; }
@@ -253,6 +318,7 @@
     .conteudo { padding: 1.25rem 1rem 5rem 1rem; }
     .ancora-texto { font-size: 16px; }
     .modo-barra { gap: 0.4rem; }
+    .popup-rastreamento { bottom: 6rem; width: 90%; }
   }
 </style>
 </head>
@@ -321,6 +387,12 @@
           Consistência
         </button>
       </li>
+      <li id="nav-lixeira">
+        <button onclick="navegar('lixeira')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Lixeira
+        </button>
+      </li>
     </ul>
     <div class="sidebar-footer">
       <span id="sidebar-data"></span>
@@ -339,6 +411,13 @@
     <!-- MODO ATUAL -->
     <div class="modo-barra" id="modo-barra"></div>
 
+    <!-- BARRA RASTREAMENTO ATIVO -->
+    <div class="modo-ativo-bar" id="modo-ativo-bar">
+      <span class="modo-ativo-nome" id="modo-ativo-nome"></span>
+      <span class="modo-ativo-timer" id="modo-ativo-timer">00:00</span>
+      <button class="btn-modo-pausar" id="btn-modo-pausar" onclick="togglePausaModo()">Pausar</button>
+    </div>
+
     <!-- ÂNCORA DO DIA -->
     <div id="ancora-container"></div>
 
@@ -346,6 +425,12 @@
     <div class="card" id="compromissos-hoje-card" style="display:none">
       <div class="card-titulo">Compromissos de hoje</div>
       <div id="compromissos-hoje-lista"></div>
+    </div>
+
+    <!-- BLOCOS DE MANUTENÇÃO -->
+    <div class="card" id="manutencao-card" style="display:none">
+      <div class="card-titulo">Manutenção <button class="btn-mini" onclick="abrirModal('modal-manutencao')">+ novo</button></div>
+      <div id="manutencao-lista"></div>
     </div>
 
     <!-- TAREFAS -->
@@ -366,15 +451,46 @@
       <div class="card-titulo">Checklist diário <button class="btn-mini" onclick="abrirModalRotina()">editar</button></div>
       <div class="rotina-grid" id="rotina-grid"></div>
     </div>
+
+    <!-- RESUMO DO DIA -->
+    <div class="card" id="resumo-dia-card" style="display:none">
+      <div class="card-titulo">Resumo do dia</div>
+      <div id="resumo-dia-lista"></div>
+    </div>
   </div>
 
   <!-- AGENDA -->
   <div id="pagina-agenda" class="conteudo" style="display:none">
     <h1 class="pagina-titulo">Agenda</h1>
-    <p class="pagina-subtitulo">Compromissos e datas importantes</p>
+    <p class="pagina-subtitulo">Compromissos e recorrências</p>
     <div class="card">
-      <div class="card-titulo">Próximos compromissos <button class="btn-mini" onclick="abrirModal('modal-compromisso')">+ novo</button></div>
+      <div class="cal-header">
+        <button class="cal-nav-btn" onclick="navMes(-1)">‹</button>
+        <div class="cal-mes-titulo" id="cal-mes-titulo"></div>
+        <button class="cal-nav-btn" onclick="navMes(1)">›</button>
+      </div>
+      <div class="cal-grid" id="cal-dias-header"></div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="card">
+      <div class="card-titulo">
+        <span id="agenda-dia-selecionado-titulo">Compromissos</span>
+        <button class="btn-mini" onclick="abrirModal('modal-compromisso')">+ novo</button>
+      </div>
       <div id="lista-compromissos"></div>
+    </div>
+  </div>
+
+  <!-- LIXEIRA -->
+  <div id="pagina-lixeira" class="conteudo" style="display:none">
+    <h1 class="pagina-titulo">Lixeira</h1>
+    <p class="pagina-subtitulo">Tarefas excluídas ou desmarcadas por engano</p>
+    <div class="card">
+      <div class="card-titulo">
+        Tarefas removidas
+        <button class="btn-mini danger" onclick="esvaziarLixeira()">esvaziar</button>
+      </div>
+      <div id="lixeira-lista"></div>
     </div>
   </div>
 
@@ -557,11 +673,17 @@
 <div id="modal-compromisso" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-titulo">Novo compromisso</div>
-    <input type="text" class="input-full" id="modal-compromisso-texto" placeholder="Ex: Reunião com a Casa da Lingerie">
-    <span class="modal-label">Data</span>
+    <input type="text" class="input-full" id="modal-compromisso-texto" placeholder="Ex: Reunião na Câmara">
+    <span class="modal-label">Data de início</span>
     <input type="date" class="input-full" id="modal-compromisso-data">
     <span class="modal-label">Horário (opcional)</span>
     <input type="time" class="input-full" id="modal-compromisso-hora">
+    <span class="modal-label">Recorrência</span>
+    <select class="select-projeto" id="modal-compromisso-recorrencia">
+      <option value="unico">Apenas este dia</option>
+      <option value="semanal">Toda semana (mesmo dia)</option>
+      <option value="mensal">Todo mês (mesma data)</option>
+    </select>
     <div class="modal-acoes">
       <button class="btn-secundario" onclick="fecharModal('modal-compromisso')">Cancelar</button>
       <button class="btn-confirmar" onclick="confirmarCompromisso()">Marcar</button>
@@ -581,6 +703,64 @@
     </div>
     <div class="modal-acoes" style="margin-top:0.75rem">
       <button class="btn-confirmar" onclick="fecharModal('modal-modos')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP RASTREAMENTO -->
+<div class="popup-rastreamento" id="popup-rastreamento">
+  <div class="popup-rastr-titulo" id="popup-rastr-titulo">Tempo registrado</div>
+  <div class="popup-rastr-tempo" id="popup-rastr-tempo">0h 00min</div>
+  <div class="popup-rastr-acoes">
+    <button class="btn-popup btn-popup-ok" onclick="fecharPopupRastreamento()">OK</button>
+  </div>
+</div>
+
+<!-- EDITAR TAREFA -->
+<div id="modal-editar-tarefa" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Editar tarefa</div>
+    <input type="hidden" id="editar-tarefa-id">
+    <input type="text" class="input-full" id="editar-tarefa-texto" placeholder="Descrição da tarefa" style="margin-bottom:0.5rem">
+    <select class="select-projeto" id="editar-tarefa-projeto"><option value="">Sem projeto</option></select>
+    <span class="modal-label">Urgência</span>
+    <div class="urgencia-seletor" id="editar-tarefa-urgencia">
+      <div class="urgencia-opcao" data-urg="urgente" onclick="selecionarUrgencia('editar-tarefa', 'urgente')"><span class="urgencia-dot urgencia-urgente" style="margin:0"></span> Urgente</div>
+      <div class="urgencia-opcao selecionada sel-medio" data-urg="medio" onclick="selecionarUrgencia('editar-tarefa', 'medio')"><span class="urgencia-dot urgencia-medio" style="margin:0"></span> Médio</div>
+      <div class="urgencia-opcao" data-urg="tranquilo" onclick="selecionarUrgencia('editar-tarefa', 'tranquilo')"><span class="urgencia-dot urgencia-tranquilo" style="margin:0"></span> Tranquilo</div>
+    </div>
+    <span class="modal-label">Data</span>
+    <input type="date" class="input-full" id="editar-tarefa-data" style="margin-bottom:0.5rem">
+    <span class="modal-label">Horário (opcional)</span>
+    <input type="time" class="input-full" id="editar-tarefa-horario">
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-editar-tarefa')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarEdicaoTarefa()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MANUTENÇÃO -->
+<div id="modal-manutencao" class="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-titulo">Novo bloco de manutenção</div>
+    <input type="text" class="input-full" id="modal-manut-texto" placeholder="Ex: Conferir campanhas de tráfego" style="margin-bottom:0.5rem">
+    <span class="modal-label">Frequência</span>
+    <select class="select-projeto" id="modal-manut-freq">
+      <option value="diario">Todo dia</option>
+      <option value="seg">Toda segunda</option>
+      <option value="ter">Toda terça</option>
+      <option value="qua">Toda quarta</option>
+      <option value="qui">Toda quinta</option>
+      <option value="sex">Toda sexta</option>
+      <option value="sab">Todo sábado</option>
+      <option value="dom">Todo domingo</option>
+    </select>
+    <span class="modal-label">Projeto (opcional)</span>
+    <select class="select-projeto" id="modal-manut-projeto"><option value="">Sem projeto</option></select>
+    <div class="modal-acoes">
+      <button class="btn-secundario" onclick="fecharModal('modal-manutencao')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarManutencao()">Adicionar</button>
     </div>
   </div>
 </div>
@@ -625,7 +805,12 @@ const ESTADO_PADRAO = {
   modos: { m0: '💼 Trabalho', m1: '🛋️ Descanso', m2: '🏋️ Academia', m3: '🌅 Vida' },
   modoAtual: '',
   agenda: {},
-  ancoras: {}
+  ancoras: {},
+  // V3
+  lixeira: {},
+  manutencao: {},
+  rastreamento: {},
+  rastrSessaoAtual: null
 };
 
 let estado = {};
@@ -698,7 +883,11 @@ async function inicializar() {
       if (estado.modoAtual === undefined) estado.modoAtual = '';
       if (!estado.agenda) estado.agenda = {};
       if (!estado.ancoras) estado.ancoras = {};
-      // Migrar pendências: tarefas não concluídas de dias passados vêm para hoje
+      // V3
+      if (!estado.lixeira) estado.lixeira = {};
+      if (!estado.manutencao) estado.manutencao = {};
+      if (!estado.rastreamento) estado.rastreamento = {};
+      if (!estado.rastrSessaoAtual) estado.rastrSessaoAtual = null;
       migrarPendencias();
     } else {
       // Primeiro acesso — salva estado padrão
@@ -767,25 +956,24 @@ window.irParaPrincipal = function() {
 // NAVEGAÇÃO
 // ============================================================
 window.navegar = function(pagina) {
-  ['hoje','projetos','projeto-detalhe','estacionamento','agenda','consistencia'].forEach(p => {
+  ['hoje','projetos','projeto-detalhe','estacionamento','agenda','consistencia','lixeira'].forEach(p => {
     const el = document.getElementById('pagina-' + p);
     if (el) el.style.display = 'none';
   });
-  ['hoje','projetos','estacionamento','agenda','consistencia'].forEach(n => {
+  ['hoje','projetos','estacionamento','agenda','consistencia','lixeira'].forEach(n => {
     const el = document.getElementById('nav-' + n);
     if (el) el.classList.remove('ativo');
   });
-
   const alvo = document.getElementById('pagina-' + pagina);
   if (alvo) alvo.style.display = 'block';
   const navAtivo = document.getElementById('nav-' + pagina);
   if (navAtivo) navAtivo.classList.add('ativo');
-
   if (pagina === 'hoje') renderizarHoje();
   if (pagina === 'projetos') renderizarProjetos();
   if (pagina === 'estacionamento') renderizarEstacionamento();
   if (pagina === 'agenda') renderizarAgenda();
   if (pagina === 'consistencia') renderizarConsistencia();
+  if (pagina === 'lixeira') renderizarLixeira();
 };
 
 // ============================================================
@@ -802,6 +990,12 @@ function renderizarHoje() {
   renderizarModos();
   renderizarAncora();
   renderizarCompromissosHoje();
+  renderizarManutencao();
+  renderizarResumoDia();
+  // Retoma timer se havia sessão ativa
+  if (estado.rastrSessaoAtual && !estado.rastrSessaoAtual.pausado && estado.rastrSessaoAtual.inicio) {
+    iniciarTimerDisplay();
+  }
 
   const tarefasHoje = Object.values(estado.tarefasHoje || {}).filter(t => t && t.data === hoje);
   const container = document.getElementById('tarefas-por-projeto');
@@ -868,6 +1062,9 @@ function ordenarPorUrgencia(lista) {
 function criarItemTarefa(tarefa) {
   const div = document.createElement('div');
   div.className = 'tarefa-item';
+  const hoje = dataHoje();
+  const diasAtraso = tarefa.data && tarefa.data < hoje && !tarefa.concluida
+    ? Math.floor((new Date(hoje) - new Date(tarefa.data)) / 86400000) : 0;
 
   const check = document.createElement('div');
   check.className = 'tarefa-check' + (tarefa.concluida ? ' concluida' : '');
@@ -875,27 +1072,42 @@ function criarItemTarefa(tarefa) {
 
   const dot = document.createElement('div');
   dot.className = 'urgencia-dot urgencia-' + (tarefa.urgencia || 'medio');
-  dot.title = 'Urgência: ' + (tarefa.urgencia || 'medio');
 
   const corpo = document.createElement('div');
   corpo.className = 'tarefa-corpo';
+
+  const linhaTexto = document.createElement('div');
+  linhaTexto.style.cssText = 'display:flex;align-items:center;flex-wrap:wrap;gap:0.3rem';
   const texto = document.createElement('span');
   texto.className = 'tarefa-texto' + (tarefa.concluida ? ' concluida' : '');
   texto.textContent = tarefa.texto;
-  corpo.appendChild(texto);
+  linhaTexto.appendChild(texto);
+  if (diasAtraso > 0) {
+    const badge = document.createElement('span');
+    badge.className = 'tarefa-atraso-badge';
+    badge.textContent = diasAtraso === 1 ? '1 dia atrasada' : `${diasAtraso} dias atrasada`;
+    linhaTexto.appendChild(badge);
+  }
+  corpo.appendChild(linhaTexto);
 
   if (tarefa.horario) {
     const meta = document.createElement('div');
     meta.className = 'tarefa-meta';
-    const h = document.createElement('span');
     const agora = new Date();
-    const atrasada = !tarefa.concluida && tarefa.data === dataHoje() &&
+    const atrasada = !tarefa.concluida && tarefa.data === hoje &&
       tarefa.horario < `${String(agora.getHours()).padStart(2,'0')}:${String(agora.getMinutes()).padStart(2,'0')}`;
+    const h = document.createElement('span');
     h.className = 'tarefa-horario' + (atrasada ? ' atrasada' : '');
     h.textContent = '🕐 ' + tarefa.horario;
     meta.appendChild(h);
     corpo.appendChild(meta);
   }
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'tarefa-edit-btn';
+  editBtn.textContent = '✎';
+  editBtn.title = 'Editar';
+  editBtn.onclick = () => abrirEditarTarefa(tarefa.id);
 
   const del = document.createElement('button');
   del.className = 'tarefa-delete';
@@ -905,6 +1117,7 @@ function criarItemTarefa(tarefa) {
   div.appendChild(check);
   div.appendChild(dot);
   div.appendChild(corpo);
+  div.appendChild(editBtn);
   div.appendChild(del);
   return div;
 }
@@ -913,7 +1126,19 @@ async function toggleTarefa(id) {
   if (!estado.tarefasHoje[id]) return;
   const novoValor = !estado.tarefasHoje[id].concluida;
   estado.tarefasHoje[id].concluida = novoValor;
-  // Se for a âncora de hoje, atualiza consistência
+  // Se desmarcou — vai para lixeira de desmarcados para poder recuperar
+  if (!novoValor) {
+    const copia = { ...estado.tarefasHoje[id], desmarcadaEm: new Date().toISOString(), tipo: 'desmarcada' };
+    if (!estado.lixeira) estado.lixeira = {};
+    estado.lixeira['d_' + id] = copia;
+    await salvar(`lixeira/d_${id}`, copia);
+  } else {
+    // Se foi concluída, remove da lixeira se estiver lá
+    if (estado.lixeira && estado.lixeira['d_' + id]) {
+      delete estado.lixeira['d_' + id];
+      await salvar(`lixeira/d_${id}`, null);
+    }
+  }
   const hoje = dataHoje();
   if (estado.ancoras && estado.ancoras[hoje] === id) {
     atualizarConsistenciaAuto();
@@ -925,10 +1150,334 @@ async function toggleTarefa(id) {
 }
 
 async function deletarTarefa(id) {
+  const tarefa = estado.tarefasHoje[id];
+  if (tarefa) {
+    // Envia para lixeira
+    if (!estado.lixeira) estado.lixeira = {};
+    const copia = { ...tarefa, excluidaEm: new Date().toISOString(), tipo: 'excluida' };
+    estado.lixeira['e_' + id] = copia;
+    await salvar(`lixeira/e_${id}`, copia);
+  }
   delete estado.tarefasHoje[id];
   renderizarHoje();
   await salvar(`tarefasHoje/${id}`, null);
-  mostrarNotificacao('Tarefa removida');
+  mostrarNotificacao('Tarefa movida para lixeira');
+}
+
+// ============================================================
+// RASTREAMENTO V3
+// ============================================================
+let timerInterval = null;
+
+function iniciarTimerDisplay() {
+  if (timerInterval) clearInterval(timerInterval);
+  const sessao = estado.rastrSessaoAtual;
+  if (!sessao || sessao.pausado) return;
+  const bar = document.getElementById('modo-ativo-bar');
+  const timerEl = document.getElementById('modo-ativo-timer');
+  const nomeEl = document.getElementById('modo-ativo-nome');
+  const pausaBtn = document.getElementById('btn-modo-pausar');
+  if (!bar) return;
+  bar.classList.add('visivel');
+  nomeEl.textContent = estado.modos && estado.modos[sessao.modoKey] || sessao.modoKey;
+  if (pausaBtn) pausaBtn.textContent = 'Pausar';
+  timerEl.className = 'modo-ativo-timer';
+  timerInterval = setInterval(() => {
+    const total = (sessao.acumuladoMs || 0) + (Date.now() - sessao.inicio);
+    timerEl.textContent = formatarTempo(total);
+  }, 1000);
+}
+
+function pararTimerDisplay() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  const bar = document.getElementById('modo-ativo-bar');
+  if (bar) bar.classList.remove('visivel');
+}
+
+function formatarTempo(ms) {
+  const s = Math.floor(ms / 1000);
+  const m = Math.floor(s / 60);
+  const h = Math.floor(m / 60);
+  return h > 0 ? `${h}h ${String(m%60).padStart(2,'0')}min` : `${String(m).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
+}
+
+window.togglePausaModo = async function() {
+  const sessao = estado.rastrSessaoAtual;
+  if (!sessao) return;
+  const pausaBtn = document.getElementById('btn-modo-pausar');
+  const timerEl = document.getElementById('modo-ativo-timer');
+  if (!sessao.pausado) {
+    sessao.acumuladoMs = (sessao.acumuladoMs || 0) + (Date.now() - sessao.inicio);
+    sessao.pausado = true; sessao.inicio = null;
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    timerEl.className = 'modo-ativo-timer modo-ativo-pausado';
+    timerEl.textContent = formatarTempo(sessao.acumuladoMs) + ' ⏸';
+    if (pausaBtn) pausaBtn.textContent = 'Retomar';
+  } else {
+    sessao.pausado = false; sessao.inicio = Date.now();
+    if (pausaBtn) pausaBtn.textContent = 'Pausar';
+    iniciarTimerDisplay();
+  }
+  await salvar('rastrSessaoAtual', sessao);
+};
+
+function mostrarPopupRastreamento(modoNome, totalMs) {
+  const popup = document.getElementById('popup-rastreamento');
+  if (!popup) return;
+  document.getElementById('popup-rastr-titulo').textContent = modoNome;
+  document.getElementById('popup-rastr-tempo').textContent = formatarTempo(totalMs);
+  popup.classList.add('visivel');
+  renderizarResumoDia();
+}
+
+window.fecharPopupRastreamento = function() {
+  const popup = document.getElementById('popup-rastreamento');
+  if (popup) popup.classList.remove('visivel');
+};
+
+function renderizarResumoDia() {
+  const hoje = dataHoje();
+  const card = document.getElementById('resumo-dia-card');
+  const lista = document.getElementById('resumo-dia-lista');
+  if (!card || !lista) return;
+  const registros = estado.rastreamento && estado.rastreamento[hoje] ? Object.values(estado.rastreamento[hoje]) : [];
+  if (registros.length === 0) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  const agrupado = {};
+  registros.forEach(r => { if (!agrupado[r.modoNome]) agrupado[r.modoNome] = 0; agrupado[r.modoNome] += r.totalMs; });
+  lista.innerHTML = '';
+  Object.entries(agrupado).forEach(([nome, ms]) => {
+    const div = document.createElement('div');
+    div.className = 'resumo-item';
+    div.innerHTML = `<span class="resumo-modo">${nome}</span><span class="resumo-tempo">${formatarTempo(ms)}</span>`;
+    lista.appendChild(div);
+  });
+}
+
+// ============================================================
+// EDIÇÃO DE TAREFA
+// ============================================================
+window.abrirEditarTarefa = function(id) {
+  const t = estado.tarefasHoje[id];
+  if (!t) return;
+  document.getElementById('editar-tarefa-id').value = id;
+  document.getElementById('editar-tarefa-texto').value = t.texto;
+  document.getElementById('editar-tarefa-data').value = t.data || dataHoje();
+  document.getElementById('editar-tarefa-horario').value = t.horario || '';
+  urgenciaSelecionada['editar-tarefa'] = t.urgencia || 'medio';
+  selecionarUrgencia('editar-tarefa', t.urgencia || 'medio');
+  const sel = document.getElementById('editar-tarefa-projeto');
+  sel.innerHTML = '<option value="">Sem projeto</option>';
+  projetosOrdenados().forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id;
+    opt.textContent = `${p.emoji} ${p.nome}`;
+    if (t.projetoId === p.id) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  abrirModal('modal-editar-tarefa');
+};
+
+window.confirmarEdicaoTarefa = async function() {
+  const id = document.getElementById('editar-tarefa-id').value;
+  const t = estado.tarefasHoje[id];
+  if (!t) return;
+  t.texto = document.getElementById('editar-tarefa-texto').value.trim() || t.texto;
+  t.projetoId = document.getElementById('editar-tarefa-projeto').value || null;
+  t.urgencia = urgenciaSelecionada['editar-tarefa'] || 'medio';
+  t.data = document.getElementById('editar-tarefa-data').value || t.data;
+  t.horario = document.getElementById('editar-tarefa-horario').value || '';
+  fecharModal('modal-editar-tarefa');
+  renderizarHoje();
+  await salvar(`tarefasHoje/${id}`, t);
+  mostrarNotificacao('Tarefa atualizada ✓');
+};
+
+// ============================================================
+// MANUTENÇÃO
+// ============================================================
+const DIAS_SEMANA_NUM = { seg:1, ter:2, qua:3, qui:4, sex:5, sab:6, dom:0 };
+const FREQ_LABEL = { diario:'diário', seg:'seg', ter:'ter', qua:'qua', qui:'qui', sex:'sex', sab:'sáb', dom:'dom' };
+
+function tarefaManutencaoHoje(freq) {
+  if (freq === 'diario') return true;
+  return DIAS_SEMANA_NUM[freq] === new Date().getDay();
+}
+
+function renderizarManutencao() {
+  const card = document.getElementById('manutencao-card');
+  const lista = document.getElementById('manutencao-lista');
+  if (!card || !lista) return;
+  const itens = Object.values(estado.manutencao || {}).filter(m => m && tarefaManutencaoHoje(m.freq));
+  if (itens.length === 0) { card.style.display = 'none'; return; }
+  card.style.display = 'block';
+  lista.innerHTML = '';
+  const hoje = dataHoje();
+  itens.forEach(m => {
+    const feito = m.feitoEm && m.feitoEm[hoje];
+    const proj = m.projetoId && estado.projetos && estado.projetos[m.projetoId];
+    const div = document.createElement('div');
+    div.className = 'manutencao-item';
+    const check = document.createElement('div');
+    check.className = 'tarefa-check' + (feito ? ' concluida' : '');
+    check.onclick = () => toggleManutencao(m.id);
+    const span = document.createElement('span');
+    span.className = 'tarefa-texto' + (feito ? ' concluida' : '');
+    span.textContent = (proj ? proj.emoji + ' ' : '') + m.texto;
+    const freq = document.createElement('span');
+    freq.className = 'manutencao-freq';
+    freq.textContent = FREQ_LABEL[m.freq] || m.freq;
+    const del = document.createElement('button');
+    del.className = 'tarefa-delete';
+    del.textContent = '×';
+    del.onclick = () => deletarManutencao(m.id);
+    div.appendChild(check); div.appendChild(span); div.appendChild(freq); div.appendChild(del);
+    lista.appendChild(div);
+  });
+}
+
+async function toggleManutencao(id) {
+  const hoje = dataHoje();
+  if (!estado.manutencao[id].feitoEm) estado.manutencao[id].feitoEm = {};
+  const novoValor = !estado.manutencao[id].feitoEm[hoje];
+  estado.manutencao[id].feitoEm[hoje] = novoValor;
+  renderizarManutencao();
+  registrarAtividade();
+  await salvar(`manutencao/${id}/feitoEm/${hoje}`, novoValor);
+}
+
+async function deletarManutencao(id) {
+  delete estado.manutencao[id];
+  renderizarManutencao();
+  await salvar(`manutencao/${id}`, null);
+}
+
+window.confirmarManutencao = async function() {
+  const texto = document.getElementById('modal-manut-texto').value.trim();
+  if (!texto) return;
+  const freq = document.getElementById('modal-manut-freq').value;
+  const projetoId = document.getElementById('modal-manut-projeto').value || null;
+  const id = gerarId();
+  const item = { id, texto, freq, projetoId, feitoEm: {} };
+  if (!estado.manutencao) estado.manutencao = {};
+  estado.manutencao[id] = item;
+  fecharModal('modal-manutencao');
+  renderizarManutencao();
+  await salvar(`manutencao/${id}`, item);
+  mostrarNotificacao('Bloco de manutenção adicionado ✓');
+};
+
+// ============================================================
+// LIXEIRA
+// ============================================================
+function renderizarLixeira() {
+  const lista = document.getElementById('lixeira-lista');
+  if (!lista) return;
+  const itens = Object.entries(estado.lixeira || {})
+    .map(([k,v]) => ({...v, _key: k}))
+    .sort((a,b) => (b.excluidaEm||b.desmarcadaEm||'') > (a.excluidaEm||a.desmarcadaEm||'') ? 1 : -1);
+  lista.innerHTML = '';
+  if (itens.length === 0) {
+    lista.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🗑️</div><div class="empty-state-texto">Lixeira vazia.</div></div>';
+    return;
+  }
+  itens.forEach(item => {
+    const proj = item.projetoId && estado.projetos && estado.projetos[item.projetoId];
+    const div = document.createElement('div');
+    div.className = 'lixeira-item';
+    div.innerHTML = `
+      <div class="lixeira-info">
+        <div class="lixeira-titulo">${item.texto || '—'}</div>
+        <div class="lixeira-meta">${proj ? proj.emoji+' '+proj.nome+' · ':''} ${item.tipo === 'desmarcada' ? 'desmarcada' : 'excluída'} · ${formatarData(item.data||'')}</div>
+      </div>
+      <button class="btn-restaurar" onclick="restaurarDaLixeira('${item._key}')">Restaurar</button>`;
+    lista.appendChild(div);
+  });
+}
+
+window.restaurarDaLixeira = async function(key) {
+  const item = estado.lixeira[key];
+  if (!item) return;
+  const id = item.id || gerarId();
+  const restaurada = { ...item, data: dataHoje(), concluida: false };
+  delete restaurada._key; delete restaurada.excluidaEm; delete restaurada.desmarcadaEm; delete restaurada.tipo;
+  if (!estado.tarefasHoje) estado.tarefasHoje = {};
+  estado.tarefasHoje[id] = restaurada;
+  delete estado.lixeira[key];
+  renderizarLixeira();
+  await salvar(`tarefasHoje/${id}`, restaurada);
+  await salvar(`lixeira/${key}`, null);
+  mostrarNotificacao('Tarefa restaurada ✓');
+};
+
+window.esvaziarLixeira = async function() {
+  estado.lixeira = {};
+  renderizarLixeira();
+  await salvar('lixeira', {});
+  mostrarNotificacao('Lixeira esvaziada');
+};
+
+// ============================================================
+// CALENDÁRIO AGENDA V3
+// ============================================================
+let calMesAtual = new Date().getMonth();
+let calAnoAtual = new Date().getFullYear();
+let calDiaSelecionado = dataHoje();
+
+window.navMes = function(dir) {
+  calMesAtual += dir;
+  if (calMesAtual > 11) { calMesAtual = 0; calAnoAtual++; }
+  if (calMesAtual < 0) { calMesAtual = 11; calAnoAtual--; }
+  renderizarCalendario();
+};
+
+function verificarRecorrencia(comp, dataStr) {
+  if (!comp.recorrencia || comp.recorrencia === 'unico') return false;
+  const dt = new Date(dataStr + 'T12:00:00');
+  const inicio = new Date((comp.data||dataStr) + 'T12:00:00');
+  if (dt < inicio) return false;
+  if (comp.recorrencia === 'semanal') return dt.getDay() === inicio.getDay();
+  if (comp.recorrencia === 'mensal') return dt.getDate() === inicio.getDate();
+  return false;
+}
+
+function renderizarCalendario() {
+  const titulo = document.getElementById('cal-mes-titulo');
+  if (!titulo) return;
+  titulo.textContent = `${nomeMes(calMesAtual)} ${calAnoAtual}`;
+  const headerEl = document.getElementById('cal-dias-header');
+  headerEl.innerHTML = '';
+  ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'].forEach(d => {
+    const div = document.createElement('div');
+    div.className = 'cal-dia-header';
+    div.textContent = d;
+    headerEl.appendChild(div);
+  });
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  const primeiroDia = new Date(calAnoAtual, calMesAtual, 1).getDay();
+  const totalDias = new Date(calAnoAtual, calMesAtual + 1, 0).getDate();
+  const diasMesAnterior = new Date(calAnoAtual, calMesAtual, 0).getDate();
+  const hojeStr = dataHoje();
+  for (let i = primeiroDia - 1; i >= 0; i--) {
+    const div = document.createElement('div');
+    div.className = 'cal-dia outro-mes';
+    div.textContent = diasMesAnterior - i;
+    grid.appendChild(div);
+  }
+  for (let d = 1; d <= totalDias; d++) {
+    const dataStr = `${calAnoAtual}-${String(calMesAtual+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const temEvento = Object.values(estado.agenda||{}).some(c => c && (c.data === dataStr || verificarRecorrencia(c, dataStr)));
+    const div = document.createElement('div');
+    let cls = 'cal-dia';
+    if (dataStr === hojeStr) cls += ' hoje';
+    if (dataStr === calDiaSelecionado) cls += ' selecionado';
+    if (temEvento) cls += ' tem-evento';
+    div.className = cls;
+    div.textContent = d;
+    div.onclick = () => { calDiaSelecionado = dataStr; renderizarCalendario(); renderizarAgendaDia(); };
+    grid.appendChild(div);
+  }
 }
 
 // ============================================================
@@ -971,12 +1520,47 @@ function renderizarModos() {
 }
 
 async function ativarModo(key) {
-  // Clicar no modo já ativo desliga
-  estado.modoAtual = (estado.modoAtual === key) ? '' : key;
+  const sessaoAnterior = estado.rastrSessaoAtual;
+  // Finaliza sessão anterior se existir
+  if (sessaoAnterior && sessaoAnterior.modoKey) {
+    let totalMs = sessaoAnterior.acumuladoMs || 0;
+    if (!sessaoAnterior.pausado && sessaoAnterior.inicio) totalMs += Date.now() - sessaoAnterior.inicio;
+    pararTimerDisplay();
+    const hoje = dataHoje();
+    if (!estado.rastreamento) estado.rastreamento = {};
+    if (!estado.rastreamento[hoje]) estado.rastreamento[hoje] = {};
+    const rid = gerarId();
+    const registro = { modoKey: sessaoAnterior.modoKey, modoNome: estado.modos[sessaoAnterior.modoKey]||sessaoAnterior.modoKey, totalMs, fim: new Date().toISOString() };
+    estado.rastreamento[hoje][rid] = registro;
+    await salvar(`rastreamento/${hoje}/${rid}`, registro);
+    mostrarPopupRastreamento(registro.modoNome, totalMs);
+    estado.rastrSessaoAtual = null;
+    await salvar('rastrSessaoAtual', null);
+  }
+  // Desligar ou trocar
+  if (estado.modoAtual === key && !sessaoAnterior) {
+    estado.modoAtual = '';
+    await salvar('modoAtual', '');
+    renderizarModos();
+    return;
+  }
+  if (estado.modoAtual === key) {
+    // Estava ativo e finalizou sessão — desliga
+    estado.modoAtual = '';
+    await salvar('modoAtual', '');
+    renderizarModos();
+    return;
+  }
+  // Novo modo
+  estado.modoAtual = key;
+  const novaSessao = { modoKey: key, inicio: Date.now(), acumuladoMs: 0, pausado: false };
+  estado.rastrSessaoAtual = novaSessao;
+  await salvar('modoAtual', key);
+  await salvar('rastrSessaoAtual', novaSessao);
   renderizarModos();
+  iniciarTimerDisplay();
   registrarAtividade();
-  await salvar('modoAtual', estado.modoAtual);
-  if (estado.modoAtual) mostrarNotificacao('Modo: ' + estado.modos[key]);
+  mostrarNotificacao('Modo: ' + (estado.modos[key]||key));
 }
 
 function abrirModalModos() {
@@ -1086,60 +1670,66 @@ function renderizarCompromissosHoje() {
   const hoje = dataHoje();
   const card = document.getElementById('compromissos-hoje-card');
   const lista = document.getElementById('compromissos-hoje-lista');
-  const compromissosHoje = Object.values(estado.agenda || {}).filter(c => c && c.data === hoje);
-
-  if (compromissosHoje.length === 0) {
-    card.style.display = 'none';
-    return;
-  }
+  if (!card || !lista) return;
+  const compromissosHoje = Object.values(estado.agenda || {}).filter(c => c && (c.data === hoje || verificarRecorrencia(c, hoje)));
+  if (compromissosHoje.length === 0) { card.style.display = 'none'; return; }
   card.style.display = 'block';
   lista.innerHTML = '';
   compromissosHoje.sort((a,b) => (a.hora||'99') < (b.hora||'99') ? -1 : 1).forEach(c => {
     const div = document.createElement('div');
     div.className = 'compromisso-item';
+    const recLabel = c.recorrencia && c.recorrencia !== 'unico' ? `<span class="manutencao-freq">${c.recorrencia}</span>` : '';
     div.innerHTML = `
       <div class="compromisso-hora">${c.hora || '—'}</div>
-      <div class="compromisso-texto">${c.texto}</div>
+      <div class="compromisso-texto">${c.texto} ${recLabel}</div>
       <button class="tarefa-delete" style="opacity:0.5" onclick="deletarCompromisso('${c.id}')">×</button>`;
     lista.appendChild(div);
   });
 }
 
 function renderizarAgenda() {
-  const lista = document.getElementById('lista-compromissos');
-  lista.innerHTML = '';
-  const hoje = dataHoje();
-  const compromissos = Object.values(estado.agenda || {})
-    .filter(c => c && c.data >= hoje)
-    .sort((a,b) => {
-      if (a.data !== b.data) return a.data < b.data ? -1 : 1;
-      return (a.hora||'99') < (b.hora||'99') ? -1 : 1;
+  calMesAtual = new Date().getMonth();
+  calAnoAtual = new Date().getFullYear();
+  calDiaSelecionado = dataHoje();
+  renderizarCalendario();
+  renderizarAgendaDia();
+  // Popular select de projeto no modal de manutenção
+  const sel = document.getElementById('modal-manut-projeto');
+  if (sel) {
+    sel.innerHTML = '<option value="">Sem projeto</option>';
+    projetosOrdenados().forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id; opt.textContent = `${p.emoji} ${p.nome}`;
+      sel.appendChild(opt);
     });
+  }
+}
 
-  if (compromissos.length === 0) {
-    lista.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-texto">Nenhum compromisso futuro. Marque o próximo.</div></div>';
+function renderizarAgendaDia() {
+  const lista = document.getElementById('lista-compromissos');
+  const tituloEl = document.getElementById('agenda-dia-selecionado-titulo');
+  if (!lista) return;
+  const dia = calDiaSelecionado || dataHoje();
+  if (tituloEl) tituloEl.textContent = dia === dataHoje() ? 'Hoje' : formatarDataCompleta(dia);
+
+  // Compromissos do dia selecionado (únicos + recorrentes)
+  const comps = Object.values(estado.agenda||{}).filter(c => c && (c.data === dia || verificarRecorrencia(c, dia)));
+  comps.sort((a,b) => (a.hora||'99') < (b.hora||'99') ? -1 : 1);
+
+  lista.innerHTML = '';
+  if (comps.length === 0) {
+    lista.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div><div class="empty-state-texto">Nenhum compromisso neste dia.</div></div>';
     return;
   }
-
-  // Agrupar por data
-  const grupos = {};
-  compromissos.forEach(c => { if (!grupos[c.data]) grupos[c.data] = []; grupos[c.data].push(c); });
-
-  Object.entries(grupos).forEach(([data, items]) => {
-    const grupo = document.createElement('div');
-    grupo.className = 'agenda-dia-grupo';
-    const ehHoje = data === hoje;
-    grupo.innerHTML = `<div class="agenda-dia-titulo ${ehHoje ? 'agenda-hoje-destaque' : ''}">${ehHoje ? 'HOJE · ' : ''}${formatarDataCompleta(data)}</div>`;
-    items.forEach(c => {
-      const div = document.createElement('div');
-      div.className = 'compromisso-item';
-      div.innerHTML = `
-        <div class="compromisso-hora">${c.hora || '—'}</div>
-        <div class="compromisso-texto">${c.texto}</div>
-        <button class="tarefa-delete" style="opacity:0.5" onclick="deletarCompromisso('${c.id}')">×</button>`;
-      grupo.appendChild(div);
-    });
-    lista.appendChild(grupo);
+  comps.forEach(c => {
+    const div = document.createElement('div');
+    div.className = 'compromisso-item';
+    const recLabel = c.recorrencia && c.recorrencia !== 'unico' ? `<span class="manutencao-freq">${c.recorrencia}</span>` : '';
+    div.innerHTML = `
+      <div class="compromisso-hora">${c.hora||'—'}</div>
+      <div class="compromisso-texto">${c.texto} ${recLabel}</div>
+      <button class="tarefa-delete" style="opacity:0.5" onclick="deletarCompromisso('${c.id}')">×</button>`;
+    lista.appendChild(div);
   });
 }
 
@@ -1155,13 +1745,15 @@ window.confirmarCompromisso = async function() {
   const texto = document.getElementById('modal-compromisso-texto').value.trim();
   const data = document.getElementById('modal-compromisso-data').value;
   const hora = document.getElementById('modal-compromisso-hora').value;
+  const recorrencia = document.getElementById('modal-compromisso-recorrencia').value || 'unico';
   if (!texto || !data) { mostrarNotificacao('Preencha o compromisso e a data'); return; }
   const id = gerarId();
-  const c = { id, texto, data, hora: hora || '' };
+  const c = { id, texto, data, hora: hora || '', recorrencia };
   if (!estado.agenda) estado.agenda = {};
   estado.agenda[id] = c;
   fecharModal('modal-compromisso');
-  renderizarAgenda();
+  renderizarAgendaDia();
+  renderizarCalendario();
   registrarAtividade();
   await salvar(`agenda/${id}`, c);
   mostrarNotificacao('Compromisso marcado ✓');
@@ -1325,7 +1917,7 @@ function abrirProjetoDetalhe(projetoId) {
     });
   }
 
-  ['hoje','projetos','estacionamento','agenda','consistencia'].forEach(p => {
+  ['hoje','projetos','estacionamento','agenda','consistencia','lixeira'].forEach(p => {
     const el = document.getElementById('pagina-' + p);
     if (el) el.style.display = 'none';
   });
@@ -1484,7 +2076,7 @@ window.fecharModal = function(id) {
 };
 
 // Urgência selecionada por modal
-const urgenciaSelecionada = { 'modal-tarefa': 'medio', 'modal-tarefa-projeto': 'medio' };
+const urgenciaSelecionada = { 'modal-tarefa': 'medio', 'modal-tarefa-projeto': 'medio', 'editar-tarefa': 'medio' };
 window.selecionarUrgencia = function(modalId, urg) {
   urgenciaSelecionada[modalId] = urg;
   const seletor = document.getElementById(modalId + '-urgencia');
